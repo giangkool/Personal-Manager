@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.0/css/font-awesome.min.css">
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Material Design Bootstrap -->
+    <link href="css/mdb.min.css" rel="stylesheet">
+
+    <!-- Template styles -->
+    <style rel="stylesheet">
+        /* TEMPLATE STYLES */
+        .view {
+            min-height: 100vh !important;
+            height: 100%;
+        }
+        /* Navigation*/
+        
+        .navbar {
+            background-color: transparent;
+        }
+        
+        .scrolling-navbar {
+            -webkit-transition: background .5s ease-in-out, padding .5s ease-in-out;
+            -moz-transition: background .5s ease-in-out, padding .5s ease-in-out;
+            transition: background .5s ease-in-out, padding .5s ease-in-out;
+        }
+        
+        .top-nav-collapse {
+            background-color: #1C2331;
+        }
+        
+        footer.page-footer {
+            background-color: #1C2331;
+            margin-top: -1px;
+        }
+        
+        @media only screen and (max-width: 768px) {
+            .navbar {
+                background-color: #1C2331;
+            }
+        }
+        /*Call to action*/
+        
+        .flex-center {
+            color: #fff;
+        }
+        
+        .view {
+            background: url("img/img.jpg")no-repeat center center fixed;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+        }
+        .modal-header {
+            padding:9px 15px;
+            border-bottom:1px solid #eee;
+            background-color: #3e2723 ;
+            color: #fff;
+            text-align: center;
+            font-weight: initial;
+            text-transform: uppercase;
+        }
+        .hshow{
+            visibility: hidden;
+        }
+    </style>
+
+
+<!--Navbar-->
+<nav class="navbar navbar-dark navbar-fixed-top scrolling-navbar">
+    <!-- Collapse button-->
+    <button class="navbar-toggler hidden-sm-up" type="button" data-toggle="collapse" data-target="#collapseEx">
+            <i class="fa fa-bars"></i>
+        </button>
+
+    <div class="container">
+
+        <!--Collapse content-->
+        <div class="collapse navbar-toggleable-xs" id="collapseEx">
+            <!--Navbar Brand-->
+            <a class="navbar-brand" href=""><i class="fa fa-houzz" aria-hidden="true" style="font-size: 35px; margin-right: 10px"></i> <span ng-show="Auth.Role == 'customer'"> Personal Manager </span></a>
+            <!--Links-->
+            <ul class="nav navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="" style="margin-top: 10px" ng-show="Auth.Role == 'admin'" ng-click="getalldata()"><i class="fa fa-file-excel-o" aria-hidden="true" style="margin-right: 3px"></i> Export Excel</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="" style="margin-top: 10px" ng-show="Auth.Role == 'admin'" data-toggle="modal" data-target="#myModal3" data-backdrop="static" data-keyboard="false"><i class="fa fa-plus-square" aria-hidden="true" style="margin-right: 3px"></i> Create User</a>
+                </li>
+                 <!--<li class="nav-item">
+                    <a class="nav-link" href="" style="margin-top: 10px" ng-show="Auth.Role == 'admin'" data-toggle="modal" data-target="#myModal4" data-backdrop="static" data-keyboard="false"><i class="fa fa-recycle" aria-hidden="true" style="margin-right: 3px"></i> Reset Password</a>
+                </li>-->
+            </ul>
+            <!--Search form-->
+            <form class="form-inline">
+                <a class="nav-link"  style="font-size: 18px; margin-right: 15px; font-weight: 300" data-toggle="modal" data-target="#myModal5" data-backdrop="static" data-keyboard="false" ng-show="Number"><i class="fa fa-bell-o" aria-hidden="true" style="font-size: 18px; margin-top: 15px; margin-right: 3px;"></i><span style="position: absolute; margin-top: 18px; margin-left: -4px;">
+                    {{Number}}</span></a>
+                <a class="nav-link" style="font-size: 18px; margin-right: 15px; font-weight: 300" ng-show="!Number"><i class="fa fa-bell-slash-o" aria-hidden="true" style="font-size: 18px; margin-top: 15px; margin-right: 3px;"></i></a>
+                <a class="nav-link" data-toggle="modal" data-target="#myModal2" data-backdrop="static" data-keyboard="false" style="font-size: 18px; margin-right: 15px; font-weight: 300"><i class="fa fa-cogs" aria-hidden="true" style="font-size: 18px; margin-top: 15px; margin-right: 3px;"></i> Setting</a>
+                <a class="nav-link" ng-click="logout()" style="font-size: 18px"><i class="fa fa-sign-out" aria-hidden="true" style="font-size: 18px; margin-top: 15px; margin-right: 3px;"></i> Logout !</a>
+            </form>
+        </div>
+        <!--/.Collapse content-->
+
+    </div>
+
+</nav>
+<!--/.Navbar-->
+
+<!--Mask-->
+<div class="view hm-black-strong">
+    <div class="full-bg-img flex-center">
+        <ul class="animated fadeInUp">
+            <li>
+                <h1 class="h1-responsive">Welcome,
+                     <a class="waves-effect waves-light" ng-click="Getweek()" data-toggle="modal" data-target="#myModal" data-backdrop="static" data-keyboard="false" style="color: #FFA92C;">@{{Auth.Fullname}}</a>
+                </h1>
+            </li>
+            <li>
+                <h2 style="font-weight: 400">{{ clock | date:'EEEE, HH:mm:ss'}}</h2>
+            </li>
+            <li ng-show="ip">
+                <a href="" class="btn waves-effect waves-light teal darken-4 btn-lg" ng-click="checkin()" ng-show="!show">Check in</a>
+                <a id="checkout" ng-class="myDynamicClass" href="" class="btn waves-effect waves-light red accent-4 btn-lg" ng-click="checkout()" ng-show="show">Check out</a>
+            </li>
+            <li ng-show="!ip">
+                <h2>Your ip is not supported <i class="fa fa-smile-o" aria-hidden="true"></i></h2>
+            </li>
+        </ul>
+    </div>
+
+<!-- Get user forgot Password -->
+  <div class="modal fade" id="myModal5" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Request Forgot Password </h4>
+        </div>
+        <div class="modal-body" style="padding-bottom: 0px;">
+
+            <table width="100%" class="table table-striped" ng-show="Number">
+                <thead>
+                    <tr>
+                        <th>Email</th>
+                        <th style="text-align: center">Reset</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in Email track by $index">
+                        <td>{{item.Email}}</td>
+                        <td style="text-align: center; color: limegreen"><a href="" ng-click="reset($index)"><i class="fa fa-recycle" aria-hidden="true"></i></a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <!--<hr style="margin-bottom: 0; width: 95%"/>-->
+        <div class="modal-footer" style="padding: 7px; border-top: transparent">
+          <button type="button" class="btn grey darken-4" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
+<!-- Reset Password -->
+  <div class="modal fade" id="myModal4" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Reset User Password</h4>
+        </div>
+        <div class="modal-body" style="padding-bottom: 0px;">
+
+            <div class="input-field col s6">      
+                  <label for="email">Email</label>
+                  <input id="email" type="text" ng-model="data.email"  class="validate" required>          
+               </div>
+
+        </div>
+        <!--<hr style="margin-bottom: 0; width: 95%"/>-->
+        <div class="modal-footer" style="padding: 7px; border-top: transparent">
+          <button type="button" class="btn waves-effect waves-light  green darken-4" ng-click="reset(data)">Reset</button>
+          <button type="button" class="btn grey darken-4" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
+<!-- Create User -->
+  <div class="modal fade" id="myModal3" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Create New User</h4>
+        </div>
+        <div class="modal-body" style="padding-bottom: 0px;">
+
+            <div class="input-field col s6">      
+                  <label for="email">Email</label>
+                  <input id="email" type="text" ng-model="data.email"  class="validate" required>          
+               </div>
+               <br/>
+                <div class="input-field col s6">      
+                  <label for="password">Password</label>
+                  <input id="password" type="password" ng-model="data.password"  class="validate" required minlength="6">          
+               </div>
+               <br/>
+                <div class="input-field col s6">      
+                  <label for="fullname">Full Name</label>
+                  <input id="fullname" type="text" ng-model="data.fullname"  class="validate" required>          
+               </div>
+               <br/>
+                <div class="input-field col s6">      
+                  <label for="mobile">Mobile</label>
+                  <input id="mobile" type="text" ng-model="data.mobile"  class="validate" required minlength="10">          
+               </div>
+
+
+        </div>
+        <!--<hr style="margin-bottom: 0; width: 95%"/>-->
+        <div class="modal-footer" style="padding: 7px; border-top: transparent">
+          <button type="button" class="btn waves-effect waves-light  green darken-4" ng-click="register(data)">Create</button>
+          <button type="button" class="btn grey darken-4" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
+<!-- Change Password -->
+  <div class="modal fade" id="myModal2" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Change Your Password</h4>
+        </div>
+        <div class="modal-body" style="padding-bottom: 0px;">
+
+            <div class="input-field col s6">      
+                  <label for="password">Password</label>
+                  <input id="password" type="password" ng-model="data.password"  class="validate" required>          
+               </div>
+               <br/>
+                <div class="input-field col s6">      
+                  <label for="password">New Password</label>
+                  <input id="password" type="password" ng-model="data.newpassword"  class="validate" required minlength="6">          
+               </div>
+
+
+        </div>
+        <!--<hr style="margin-bottom: 0; width: 95%"/>-->
+        <div class="modal-footer" style="padding: 7px; border-top: transparent">
+          <button type="button" class="btn waves-effect waves-light  green darken-4" ng-click="Changepass(data)">Okay</button>
+          <button type="button" class="btn grey darken-4" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
+<!-- Show Table Time -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Working Time In Week</h4>
+        </div>
+        <div class="modal-body" style="padding-bottom: 0px;">
+            
+
+                <table class="table table-striped">
+    <thead>
+      <tr>
+        <th style="text-align: center" ng-repeat="content in list_time">{{content.DAYS}}</th>
+      </tr>
+    </thead>
+    <tbody style="color:blue; text-align: center">
+      <tr>
+        <td ng-repeat="content in list_time">
+            <i class="fa fa-times" aria-hidden="true" style="color: red; font-size: 25px" ng-show="!content.CHECKOUT"></i>
+            <i class="fa fa-check-square" aria-hidden="true" style="color: #00B62D; font-size: 25px" ng-show="content.CHECKOUT"></i>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+        </div>
+        <hr style="margin-bottom: 0; width: 95%"/>
+        <div class="modal-footer" style="padding: 7px; border-top: transparent">
+          <button type="button" class="btn waves-effect waves-light  green darken-4" ng-click="exportData()">Export Excel</button>
+          <button id="closes" type="button" class="btn grey darken-4" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
+  <div id="exportable" ng-show="abx">
+    <table width="100%">
+        <thead>
+            <tr>
+                <th>Email</th>
+                <th> Full Name</th>
+                 <th>Day</th>
+                <th>Check In Day</th>
+                <th>Check In Time</th>
+                <th>Check Out Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="item in full_list_time">
+                <td>{{item.EMAIL}}</td>
+                <td>{{item.NAME}}</td>
+                <td>{{item.DDAY}}</td>
+                <td>{{item.DAYS}}</td>
+                <td>{{item.CHECKIN}}</td>
+                <td>{{item.CHECKOUT}}</td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+
+    <div id="Exportable" ng-show="ax">
+        <table width="100%">
+            <thead>
+                <tr>
+                    <th>Email</th>
+                    <th>Full Name</th>
+                    <th>Day</th>
+                    <th>Check In Day</th>
+                    <th>Check In Time</th>
+                    <th>Check Out Time</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in full_all">
+                    <td>{{item.EMAIL}}</td>
+                    <td>{{item.NAME}}</td>
+                    <td>{{item.DDAY}}</td>
+                    <td>{{item.DAYS}}</td>
+                    <td>{{item.CHECKIN}}</td>
+                    <td>{{item.CHECKOUT}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+<!--/.Mask-->
+
+<!--Footer-->
+<div class="footer-bottom" style="background: #161C27; color: #fff">
+
+	<div class="container">
+
+		<div class="row">
+
+				<div class="copyright" style="text-align: center; font-weight: 100">
+
+					© 2017, Personal Manager, All rights reserved <a href="#" style="color: #FDA72A">Hapit </a>   <a target="_blank" href="http://hub.hapit.vn/"></a>
+
+				</div>
+
+		</div>
+
+	</div>
+
+</div>
+<!--/.Footer-->
+<script>
+
+    $(document).ready(function(){
+        $('#myModal').modal({
+            backdrop: 'static',
+            keyboard: false  // to prevent closing with Esc button (if you want this too)
+        });
+        $('#myModal2').modal({
+            backdrop: 'static',
+            keyboard: false  // to prevent closing with Esc button (if you want this too)
+        });
+  });
+</script>
