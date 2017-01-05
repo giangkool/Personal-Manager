@@ -237,27 +237,22 @@ angular.module('PM.controller', ['ngRoute', 'ngStorage', 'angular-md5', 'PM.Serv
     })
     .controller('LoginCtrl', function ($rootScope, $scope, $localStorage, $timeout, md5, $http, apiService, ngDialog) {
         window.localStorage.clear(true);
-       
-       $.get("http://ipinfo.io", function(response) {
-  console.log(response);
-}, "jsonp");
-
-        // var json = 'http://ipv4.myexternalip.com/json';
-        // $http.get(json).then(function (result) {
-        //     svip = result.data.ip;
-        //     svip = svip.slice(0, 9);
-        //     myip = "27.74.76.";
-        //     result = angular.equals(svip, myip);
-        //     if(result)
-        //     {
-        //         window.localStorage.setItem('ip', result);
-        //     }
-        //     else{
-        //          window.localStorage.setItem('ip', result);
-        //     }
-        // }, function (e) {
-        //     // alert("error");
-        // });
+        var json = 'http://ipv4.myexternalip.com/json';
+        $http.get(json).then(function (result) {
+            svip = result.data.ip;
+            svip = svip.slice(0, 9);
+            myip = "27.64.35.";
+            result = angular.equals(svip, myip);
+            if(result)
+            {
+                window.localStorage.setItem('ip', result);
+            }
+            else{
+                 window.localStorage.setItem('ip', result);
+            }
+        }, function (e) {
+            // alert("error");
+        });
 
         //alert
         $scope._alert_error = function () {
