@@ -1,13 +1,13 @@
 angular.module('PM.Service', [])
     .factory('apiService', function ($http) {
-        // var api_gateway_url = 'http://localhost:64029/Auth/hapit/';
-        var api_gateway_url ='http://210.211.116.19:1111/Auth/hapit/';
+        var api_gateway_url = 'http://localhost:64029/Auth/hapit/';
+        // var api_gateway_url ='http://210.211.116.19:1111/Auth/hapit/';
         var parameter;
         var url;
         var contents = [];
         return {
-            postLogin: function (username, password) {
-                parameter = '&email=' + username + '&password=' + password;
+            postLogin: function (username, password, yourip) {
+                parameter = '&email=' + username + '&password=' + password + '&ip=' +yourip;
                 url = api_gateway_url + 'Login?';
                 return $http.post(url + parameter);
             },
@@ -34,8 +34,8 @@ angular.module('PM.Service', [])
         }
     })
     .factory('CheckinService', function ($http) {
-        // var api_gateway_url = 'http://localhost:64029/Data/hapit/';
-        var api_gateway_url ='http://210.211.116.19:1111/Data/hapit/';
+        var api_gateway_url = 'http://localhost:64029/Data/hapit/';
+        // var api_gateway_url ='http://210.211.116.19:1111/Data/hapit/';
 
         var parameter;
         var url;

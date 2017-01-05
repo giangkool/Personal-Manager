@@ -41,7 +41,6 @@ angular.module('PM.controller', ['ngRoute', 'ngStorage', 'angular-md5', 'PM.Serv
                     showClose: false,
                 });
         };
-            
 
         //create clock
         var tick = function () {
@@ -59,6 +58,11 @@ angular.module('PM.controller', ['ngRoute', 'ngStorage', 'angular-md5', 'PM.Serv
 
         CheckinService.postCheck($scope.Auth.Email, checkin_day).then(function (response) {
             cfpLoadingBar.start();
+            if(response.data.Change_pass == "0")
+            {
+                $scope.alert = "Please change your password when you fist login";
+                $scope._alert_error();
+            }
             if(ip == "true"){
                 if (response.data._error_code == "00") {
                     $scope.show = false;
@@ -77,6 +81,7 @@ angular.module('PM.controller', ['ngRoute', 'ngStorage', 'angular-md5', 'PM.Serv
                  cfpLoadingBar.complete();
             }
         });
+
 
         getrequest();
 
@@ -218,9 +223,11 @@ angular.module('PM.controller', ['ngRoute', 'ngStorage', 'angular-md5', 'PM.Serv
 
 
         $scope.Changepass = function (data) {
+            cfpLoadingBar.start();
             if (data == undefined) {
                 $scope.alert = "Password and New Password can not be blank";
                 $scope._alert_error();
+                cfpLoadingBar.complete();
             }
             else {
                 if (data.password && data.newpassword) {
@@ -242,11 +249,13 @@ angular.module('PM.controller', ['ngRoute', 'ngStorage', 'angular-md5', 'PM.Serv
                                 $scope._alert_error();
                             }
                         }, 700);
+                        cfpLoadingBar.complete();
                     });
                 }
                 else {
                     $scope.alert = "Password and New Password can not be blank";
                     $scope._alert_error();
+                    cfpLoadingBar.complete();
                 }
             }
         }
@@ -257,15 +266,7 @@ angular.module('PM.controller', ['ngRoute', 'ngStorage', 'angular-md5', 'PM.Serv
         $http.get(json).then(function (result) {
             svip = result.data.ip;
             svip = svip.slice(0, 9);
-            myip = "27.64.35.";
-            result = angular.equals(svip, myip);
-            if(result)
-            {
-                window.localStorage.setItem('ip', result);
-            }
-            else{
-                 window.localStorage.setItem('ip', result);
-            }
+            $scope.yourip = svip;
         }, function (e) {
             // alert("error");
         });
@@ -299,10 +300,14 @@ angular.module('PM.controller', ['ngRoute', 'ngStorage', 'angular-md5', 'PM.Serv
             else {
                 if (data.username && data.password) {
                     rsapassword = md5.createHash(data.password);
-                    apiService.postLogin(data.username, rsapassword).then(function (response) {
+                    apiService.postLogin(data.username, rsapassword, $scope.yourip).then(function (response) {
                         $timeout(function () {
                             $scope.result = response.data;
                             if ($scope.result._error_code == "00") {
+                                if($scope.result.Connect == "OK")
+                                {
+                                     window.localStorage.setItem('ip', true);
+                                }
                                 window.localStorage.setItem('auth', JSON.stringify(response.data));
                                 window.location.href = '#/home';
                             }
@@ -335,7 +340,7 @@ angular.module('PM.controller', ['ngRoute', 'ngStorage', 'angular-md5', 'PM.Serv
                     apiService.postForgot(data.username).then(function (response) {
                         $timeout(function () {
                             if (response.data._error_code == "00") {
-                                $scope.alert_success = "The request send success, please try again with the default password after 5 minutes";
+                                $scope.alert_success = "The request send success !<br/> Please check your email for details";
                                 $scope._alert_success();
                             }
                             else {
