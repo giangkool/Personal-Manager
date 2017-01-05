@@ -228,31 +228,3 @@ form button:hover {
             transform: translateY(-700px) rotate(600deg);
   }
 }
-
-     .new-popup .popup{
-         width:300px;
-         background: #fff;
-    }
-    .new-popup .popup-title{
-        text-transform: uppercase;
-        color: darkred;
-        font-weight: bold;
-    }
-    .new-popup input{
-        padding-left: 5px;
-        border: 1px solid #929292;
-        border-radius: 5px;
-        color: #322C82;
-        font-weight: bold;
-        font-size: 15px;
-        text-transform: uppercase;
-    }
-    .new-popup .radio-content{
-        padding-left: 5px;
-        border: 1px solid #929292;
-        border-radius: 5px;
-        color: #322C82;
-        font-weight: bold;
-        font-size: 15px;
-        text-transform: uppercase;
-    }

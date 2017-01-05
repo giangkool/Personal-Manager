@@ -1,5 +1,5 @@
 angular.module('PM.controller', ['ngRoute', 'ngStorage', 'angular-md5', 'PM.Service', 'ngDialog'])
-    .controller('PMCtrl', function ($rootScope, $scope, $localStorage, $timeout, $interval, $filter, CheckinService, apiService, md5, ngDialog) {
+    .controller('PMCtrl', function ($rootScope, $scope, $localStorage, $timeout, $interval, $filter, CheckinService, apiService, md5, ngDialog, cfpLoadingBar) {
         var auth = window.localStorage.getItem('auth');
         var ip = window.localStorage.getItem('ip');
         $scope.Auth = JSON.parse(auth);
@@ -13,8 +13,7 @@ angular.module('PM.controller', ['ngRoute', 'ngStorage', 'angular-md5', 'PM.Serv
             return;
         }
 
-        if(ip == "true")
-        {
+        if(ip == "true"){
             $scope.ip = true;
         }
 
@@ -53,12 +52,13 @@ angular.module('PM.controller', ['ngRoute', 'ngStorage', 'angular-md5', 'PM.Serv
 
 
         $scope.logout = function () {
-           localStorage.clear(true);
-            window.location.reload(true);
+            localStorage.clear(true);
+            // window.location.reload(true);
             window.location.href = '#/login';
         }
 
         CheckinService.postCheck($scope.Auth.Email, checkin_day).then(function (response) {
+            cfpLoadingBar.start();
             if(ip == "true"){
                 if (response.data._error_code == "00") {
                     $scope.show = false;
@@ -70,9 +70,11 @@ angular.module('PM.controller', ['ngRoute', 'ngStorage', 'angular-md5', 'PM.Serv
                     $scope.show = true;
                     $scope.myDynamicClass = 'hshow';
                 }
+                cfpLoadingBar.complete();
             }else{
                  $scope.show = true;
                  $scope.myDynamicClass = 'hshow';
+                 cfpLoadingBar.complete();
             }
         });
 
@@ -94,6 +96,7 @@ angular.module('PM.controller', ['ngRoute', 'ngStorage', 'angular-md5', 'PM.Serv
         }
 
         $scope.checkin = function () {
+            cfpLoadingBar.start();
             CheckinService.postCheckin($scope.Auth.Email, checkin_day , DAY, DDAY).then(function (response) {
                     if (response.data._error_code == "00") {
                         $scope.show = true;
@@ -104,10 +107,12 @@ angular.module('PM.controller', ['ngRoute', 'ngStorage', 'angular-md5', 'PM.Serv
                         $scope.alert = response.data._error_messenger;
                         $scope._alert_error();
                     }
+                    cfpLoadingBar.complete();
                 });
         }
 
         $scope.checkout = function () {
+            cfpLoadingBar.start();
             CheckinService.postCheckout($scope.Auth.Email, checkin_day).then(function (response){
                if (response.data._error_code == "00") {
                         $scope.myDynamicClass = 'hshow';
@@ -118,10 +123,12 @@ angular.module('PM.controller', ['ngRoute', 'ngStorage', 'angular-md5', 'PM.Serv
                         $scope.alert = response.data._error_messenger;
                         $scope._alert_error();
                     }
+                    cfpLoadingBar.complete();
            });
         }
 
         $scope.Getweek = function(){
+            cfpLoadingBar.start();
             CheckinService.Get1week($scope.Auth.Email).then(function (response) {
                 if (response.data) {
                     $scope.full_list_time = response.data;
@@ -136,10 +143,12 @@ angular.module('PM.controller', ['ngRoute', 'ngStorage', 'angular-md5', 'PM.Serv
                         $scope.list_time = response.data;
                     }
                 }
+                cfpLoadingBar.complete();
             });
         }
 
         $scope.reset = function (index) {
+            cfpLoadingBar.start();
             for (var i = 0; i < $scope.Email.length; i++) {
                 if (index == i) {
                     rsapassword = md5.createHash("123456");
@@ -154,15 +163,18 @@ angular.module('PM.controller', ['ngRoute', 'ngStorage', 'angular-md5', 'PM.Serv
                             $scope._alert_error();
                             data.email = null;
                         }
+                        cfpLoadingBar.complete();
                     });
                 }
             }
         }
 
         $scope.register = function (data){
+            cfpLoadingBar.start();
             if (data == undefined) {
                 $scope.alert = "Input can not be blank !";
                 $scope._alert_error();
+                cfpLoadingBar.complete();
             }
             else {
                 if (data.email && data.password && data.fullname && data.mobile) {
@@ -180,10 +192,12 @@ angular.module('PM.controller', ['ngRoute', 'ngStorage', 'angular-md5', 'PM.Serv
                              $scope.alert = response.data._error_messenger
                              $scope._alert_error();
                         }
+                        cfpLoadingBar.complete();
                     });
                 } else {
                     $scope.alert = response.data._error_messenger
                     $scope._alert_error();
+                    cfpLoadingBar.complete();
                 }
             }
         }
@@ -213,19 +227,21 @@ angular.module('PM.controller', ['ngRoute', 'ngStorage', 'angular-md5', 'PM.Serv
                     rsapassword = md5.createHash(data.password);
                     rsanewpassword = md5.createHash(data.newpassword);
                     apiService.postChangePassword($scope.Auth.Email, rsapassword, rsanewpassword).then(function (response) {
-                        if(response.data._error_code == "00"){
-                            $scope.alert_success = response.data._error_messenger;
-                            $scope._alert_success();
-                            $timeout(function () {
-                                window.location.reload(true);
-                            }, 1300);
-                            data.password = null;
-                            data.newpassword = null;
-                        }
-                        else{
-                            $scope.alert = response.data._error_messenger;
-                            $scope._alert_error();
-                        }
+                        $timeout(function () {
+                            if (response.data._error_code == "00") {
+                                $scope.alert_success = response.data._error_messenger;
+                                $scope._alert_success();
+                                $timeout(function () {
+                                    window.location.reload(true);
+                                }, 1300);
+                                data.password = null;
+                                data.newpassword = null;
+                            }
+                            else {
+                                $scope.alert = response.data._error_messenger;
+                                $scope._alert_error();
+                            }
+                        }, 700);
                     });
                 }
                 else {
@@ -235,7 +251,7 @@ angular.module('PM.controller', ['ngRoute', 'ngStorage', 'angular-md5', 'PM.Serv
             }
         }
     })
-    .controller('LoginCtrl', function ($rootScope, $scope, $localStorage, $timeout, md5, $http, apiService, ngDialog) {
+    .controller('LoginCtrl', function ($rootScope, $scope, $localStorage, $timeout, md5, $http, apiService, ngDialog, cfpLoadingBar) {
         window.localStorage.clear(true);
         var json = 'http://ipv4.myexternalip.com/json';
         $http.get(json).then(function (result) {
@@ -253,6 +269,7 @@ angular.module('PM.controller', ['ngRoute', 'ngStorage', 'angular-md5', 'PM.Serv
         }, function (e) {
             // alert("error");
         });
+
 
         //alert
         $scope._alert_error = function () {
@@ -273,55 +290,66 @@ angular.module('PM.controller', ['ngRoute', 'ngStorage', 'angular-md5', 'PM.Serv
         
 
         $scope.login = function (data) {
+            cfpLoadingBar.start();
             if (data == undefined) {
                $scope.alert = "Username and Password can not be blank";
                $scope._alert_error();
+               cfpLoadingBar.complete();
             }
             else {
                 if (data.username && data.password) {
                     rsapassword = md5.createHash(data.password);
                     apiService.postLogin(data.username, rsapassword).then(function (response) {
-                        $scope.result = response.data;
-                        if ($scope.result._error_code == "00") {
-                            window.localStorage.setItem('auth', JSON.stringify(response.data));
-                            window.location.href = '#/home';
-                        }
-                        else {
-                           $scope.alert = "Username or Password incorrect, Please try again";
-                            $scope._alert_error();
-                        }
-
+                        $timeout(function () {
+                            $scope.result = response.data;
+                            if ($scope.result._error_code == "00") {
+                                window.localStorage.setItem('auth', JSON.stringify(response.data));
+                                window.location.href = '#/home';
+                            }
+                            else {
+                                $scope.alert = "Username or Password incorrect, Please try again";
+                                $scope._alert_error();
+                            }
+                            cfpLoadingBar.complete();
+                        }, 700);
                     });
                 }
                 else {
                      $scope.alert = "Username and Password can not be blank";
                      $scope._alert_error();
+                     cfpLoadingBar.complete();
                 }
             }
         }
 
         //show alert
         $scope.forgot = function (data) {
+            cfpLoadingBar.start();
             if(data == undefined){
                 $scope.alert = "Username can not be blank"
                 $scope._alert_error();
+                cfpLoadingBar.complete();
             }else{
                 if(data.username)
                 {
-                     apiService.postForgot(data.username).then(function (response) {
-                         if(response.data._error_code == "00"){
-                             $scope.alert_success = "The request send success, please try again with the default password after 5 minutes";
-                             $scope._alert_success();
-                         }
-                         else{
-                             $scope.alert = response.data._error_messenger;
-                             $scope._alert_error();
-                         }
-                     });
+                    apiService.postForgot(data.username).then(function (response) {
+                        $timeout(function () {
+                            if (response.data._error_code == "00") {
+                                $scope.alert_success = "The request send success, please try again with the default password after 5 minutes";
+                                $scope._alert_success();
+                            }
+                            else {
+                                $scope.alert = response.data._error_messenger;
+                                $scope._alert_error();
+                            }
+                            cfpLoadingBar.complete();
+                        }, 700);
+                    });
 
                 }else{
                     $scope.alert = "Username can not be blank"
                     $scope._alert_error();
+                    cfpLoadingBar.complete();
                 }
             }
         }

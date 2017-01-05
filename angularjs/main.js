@@ -6,7 +6,7 @@
 /**
  * Main AngularJS Web Application
  */
-angular.module('PM', ['ngRoute','PM.controller'])
+angular.module('PM', ['ngRoute','PM.controller','ngAnimate','chieffancypants.loadingBar'])
 .config(['$routeProvider', function ($routeProvider) {
   $routeProvider
     // Home
@@ -18,5 +18,8 @@ angular.module('PM', ['ngRoute','PM.controller'])
     
     .otherwise({ redirectTo: '/login' });
 }])
+.config(function(cfpLoadingBarProvider) {
+    cfpLoadingBarProvider.includeSpinner = true;
+  });
 
 
