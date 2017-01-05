@@ -16,6 +16,8 @@
     <!-- Material Design Bootstrap -->
     <link href="css/mdb.min.css" rel="stylesheet">
 
+    <link href="css/home.css" rel="stylesheet">
+
     <!-- Template styles -->
     <style rel="stylesheet">
         /* TEMPLATE STYLES */
@@ -74,6 +76,27 @@
         .hshow{
             visibility: hidden;
         }
+
+         @keyframes color-animation {
+            0% {
+            color: red;
+            }
+            25% {
+            color: #6a1b9a;
+            }
+            50% {
+            color: #fff;
+            } 
+            100% {
+            color: #004C3F
+            } 
+        }
+
+        .ipnotsuport {
+        width: 100%;
+        height: 100%;
+        animation: color-animation 3s infinite linear alternate;
+        }
     </style>
 
 
@@ -98,9 +121,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="" style="margin-top: 10px" ng-show="Auth.Role == 'admin'" data-toggle="modal" data-target="#myModal3" data-backdrop="static" data-keyboard="false"><i class="fa fa-plus-square" aria-hidden="true" style="margin-right: 3px"></i> Create User</a>
                 </li>
-                 <!--<li class="nav-item">
-                    <a class="nav-link" href="" style="margin-top: 10px" ng-show="Auth.Role == 'admin'" data-toggle="modal" data-target="#myModal4" data-backdrop="static" data-keyboard="false"><i class="fa fa-recycle" aria-hidden="true" style="margin-right: 3px"></i> Reset Password</a>
-                </li>-->
+                 <li class="nav-item">
+                    <a class="nav-link" href="" style="margin-top: 10px" ng-show="Auth.Role == 'admin'" data-toggle="modal" data-target="#myModal4" data-backdrop="static" data-keyboard="false"><i class="fa fa-pencil-square-o" aria-hidden="true" style="margin-right: 3px"></i> Notifications</a>
+                </li>
             </ul>
             <!--Search form-->
             <form class="form-inline">
@@ -120,6 +143,9 @@
 
 <!--Mask-->
 <div class="view hm-black-strong">
+        <div class="alert_server" ng-show="Auth.Role == 'customer'">
+           <h3> <marquee behavior="scroll" direction="left" scrollamount="6">Tính năng mới: bổ sung thông báo qua email khi có truy vấn liên quan đến tài khoản</marquee> </h3>
+        </div>
     <div class="full-bg-img flex-center">
         <ul class="animated fadeInUp">
             <li>
@@ -135,7 +161,7 @@
                 <a id="checkout" ng-class="myDynamicClass" href="" class="btn waves-effect waves-light red accent-4 btn-lg" ng-click="checkout()" ng-show="show">Check out</a>
             </li>
             <li ng-show="!ip">
-                <h2>Your ip is not supported <i class="fa fa-smile-o" aria-hidden="true"></i></h2>
+                <h2 class="ipnotsuport">Your ip is not supported <i class="fa fa-smile-o" aria-hidden="true"></i></h2>
             </li>
         </ul>
     </div>
