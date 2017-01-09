@@ -321,7 +321,7 @@ angular.module('PM.controller', ['ngRoute', 'ngStorage', 'angular-md5', 'PM.Serv
                     rsapassword = md5.createHash(data.password);
                     rsanewpassword = md5.createHash(data.newpassword);
                     apiService.postChangePassword($scope.Auth.Email, rsapassword, rsanewpassword).then(function (response) {
-                        $timeout(function () {
+                        // $timeout(function () {
                             if (response.data._error_code == "00") {
                                 $scope.alert_success = response.data._error_messenger;
                                 $scope._alert_success();
@@ -335,7 +335,7 @@ angular.module('PM.controller', ['ngRoute', 'ngStorage', 'angular-md5', 'PM.Serv
                                 $scope.alert = response.data._error_messenger;
                                 $scope._alert_error();
                             }
-                        }, 700);
+                        // }, 700);
                         cfpLoadingBar.complete();
                     });
                 }
@@ -440,7 +440,7 @@ angular.module('PM.controller', ['ngRoute', 'ngStorage', 'angular-md5', 'PM.Serv
                 if (data.username && data.password) {
                     rsapassword = md5.createHash(data.password);
                     apiService.postLogin(data.username, rsapassword, $scope.yourip).then(function (response) {
-                        $timeout(function () {
+                        // $timeout(function () {
                             $scope.result = response.data;
                             if ($scope.result._error_code == "00") {
                                 if($scope.result.Connect == "OK")
@@ -455,7 +455,7 @@ angular.module('PM.controller', ['ngRoute', 'ngStorage', 'angular-md5', 'PM.Serv
                                 $scope._alert_error();
                             }
                             cfpLoadingBar.complete();
-                        }, 700);
+                        // }, 700);
                     });
                 }
                 else {
@@ -477,7 +477,7 @@ angular.module('PM.controller', ['ngRoute', 'ngStorage', 'angular-md5', 'PM.Serv
                 if(data.username)
                 {
                     apiService.postForgot(data.username).then(function (response) {
-                        $timeout(function () {
+                        // $timeout(function () {
                             if (response.data._error_code == "00") {
                                 $scope.alert_success = "The request send success !<br/> Please check your email for details";
                                 $scope._alert_success();
@@ -487,7 +487,7 @@ angular.module('PM.controller', ['ngRoute', 'ngStorage', 'angular-md5', 'PM.Serv
                                 $scope._alert_error();
                             }
                             cfpLoadingBar.complete();
-                        }, 700);
+                        // }, 700);
                     });
 
                 }else{
