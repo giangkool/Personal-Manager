@@ -20,6 +20,7 @@ angular.module('PM', ['ngRoute','PM.controller','ngAnimate','chieffancypants.loa
 }])
 .config(function(cfpLoadingBarProvider) {
     cfpLoadingBarProvider.includeSpinner = true;
-  });
+  })
+
 
 

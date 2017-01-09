@@ -70,6 +70,21 @@ angular.module('PM.Service', [])
                  parameter ="";
                 url = api_gateway_url + 'Request?';
                 return $http.post(url + parameter);
+            },
+            PostNewFeed: function(Email, title, less_content, content, important){
+                parameter ="&email=" + Email + "&title="+ title+'&less_content='+less_content+'&content='+content+'&important='+important;
+                url = api_gateway_url + 'CreateNewFeed?';
+                return $http.post(url + parameter);
+            },
+            GetAllNewFeed: function(email){
+                parameter ="&email="+email;
+                url = api_gateway_url + 'GetListNew?';
+                return $http.get(url + parameter);
+            },
+            SaveUserIsread: function(Email, title, list_user){
+                parameter ="&email="+Email+"&title="+title+'&list_user='+list_user;
+                url = api_gateway_url + 'SaveUserIsRead?';
+                return $http.post(url + parameter);
             }
         }
     })
