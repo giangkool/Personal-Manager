@@ -477,7 +477,7 @@ angular.module('PM.controller', ['ngRoute', 'ngStorage', 'angular-md5', 'PM.Serv
           {columnid:'DAY', width:'100px'},
           {columnid:'CHECKIN_DAY', title: 'Check In Day', width:'150px'},
           {columnid:'CHECKIN_TIME', title: 'Check In Time', width:'150px'},
-          {columnid:'CHECKOUT_TIME', title: 'Check Out Time', width:'150px'},
+          {columnid:'CHECKOUT_TIME', title: 'Check Out Time', width:'150px'}
         ]
     };
 
@@ -493,7 +493,7 @@ angular.module('PM.controller', ['ngRoute', 'ngStorage', 'angular-md5', 'PM.Serv
           {columnid:'DAY', width:'100px'},
           {columnid:'CHECKIN_DAY', title: 'Check In Day', width:'150px'},
           {columnid:'CHECKIN_TIME', title: 'Check In Time', width:'150px'},
-          {columnid:'CHECKOUT_TIME', title: 'Check Out Time', width:'150px'},
+          {columnid:'CHECKOUT_TIME', title: 'Check Out Time', width:'150px'}
         ]
     };
 
