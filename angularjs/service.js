@@ -21,14 +21,29 @@ angular.module('PM.Service', [])
                 url = api_gateway_url + 'Forgot?';
                 return $http.post(url + parameter);
             },
-            postRegister: function (username, password, fullname, mobile) {
-                parameter = '&email=' + username + '&password=' + password + '&fullname='+ fullname + '&mobile='+ mobile;
+            postRegister: function (username, password, fullname, mobile, role) {
+                parameter = '&email=' + username + '&password=' + password + '&fullname='+ fullname + '&mobile='+ mobile + '&role=' + role;
                 url = api_gateway_url + 'Register?';
                 return $http.post(url + parameter);
             },
             postChangePassword: function (username, password, newpassword) {
                 parameter = '&email=' + username + '&password=' + password + '&newpassword='+ newpassword;
                 url = api_gateway_url + 'Change?';
+                return $http.post(url + parameter);
+            },
+            postPermission: function(Email, title, content, fromdayleave, todayleave){
+                parameter = '&email=' + Email + '&title=' + title + '&content='+ content+'&fromdayleave='+fromdayleave+'&todayleave='+todayleave;
+                url = api_gateway_url + 'Permission?';
+                return $http.post(url + parameter);
+            },
+            AllowPermission: function(Email){
+                parameter = '&email=' + Email;
+                url = api_gateway_url + 'AllowPermission?';
+                return $http.post(url + parameter);
+            },
+            AllPermission:function(){
+                parameter ="";
+                url = api_gateway_url + 'AllPermission?';
                 return $http.post(url + parameter);
             }
         }
