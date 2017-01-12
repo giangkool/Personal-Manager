@@ -1,4 +1,4 @@
-angular.module('PM.controller', ['ngRoute', 'ngStorage', 'angular-md5', 'PM.Service', 'ngDialog'])
+angular.module('PM.controller', ['ngRoute', 'ngStorage', 'angular-md5', 'PM.Service', 'ngDialog','ngAnimate','angular-notification-icons'])
     .filter('unsafe', function($sce) { return $sce.trustAsHtml; })
     .controller('PMCtrl', function ($rootScope, $scope, $localStorage, $timeout, $interval, $filter, CheckinService, apiService, md5, ngDialog, cfpLoadingBar) {
         var auth = window.localStorage.getItem('auth');
@@ -8,6 +8,17 @@ angular.module('PM.controller', ['ngRoute', 'ngStorage', 'angular-md5', 'PM.Serv
         var checkin_day = $filter('date')(new Date(), 'dd/MM/yyyy');
         var DAY = $filter('date')(new Date(), 'yyyyMMdd');
         var DDAY = $filter('date')(new Date(), 'EEEE');
+        var Hour = $filter('date')(new Date(), 'HH');
+        if(Hour < 12){
+            $scope.sayhello = "Good Morning";
+        }
+        if( 12 < Hour < 18 ){
+             $scope.sayhello = "Good Afternoon";
+        }
+        if(Hour > 18){
+            $scope.sayhello = "Good Night";
+        }
+        
 
         if(!auth){
              window.location.href = '#/login';
@@ -157,9 +168,9 @@ angular.module('PM.controller', ['ngRoute', 'ngStorage', 'angular-md5', 'PM.Serv
 
         function getrequest() {
             CheckinService.GetRequest().then(function (response) {
-                if (response.data.Email.length > 0) {
-                    $scope.Number_forgot = response.data.Email.length;
-                    $scope.Email_forgot = response.data.Email;
+                if (response.data.Auth.length > 0) {
+                    $scope.Number_forgot = response.data.Auth.length;
+                    $scope.Auth_forgot = response.data.Auth;
                 }
                  else{
                          $scope.Number_forgot = 0;
@@ -170,9 +181,9 @@ angular.module('PM.controller', ['ngRoute', 'ngStorage', 'angular-md5', 'PM.Serv
         }
         function getpermossion(){
             apiService.AllPermission().then(function (response) {
-                    if (response.data.Email.length > 0) {
-                        $scope.Number_Per = response.data.Email.length;
-                        $scope.Email_Per = response.data.Email;
+                    if (response.data.Auth.length > 0) {
+                        $scope.Number_Per = response.data.Auth.length;
+                        $scope.Auth_Per = response.data.Auth;
                     }
                     else{
                          $scope.Number_Per = 0;
@@ -184,12 +195,13 @@ angular.module('PM.controller', ['ngRoute', 'ngStorage', 'angular-md5', 'PM.Serv
             CheckinService.GetAllNewFeed($scope.Auth.Email).then(function (response) {
                 $scope.resultNewFeed = response.data;
                 $scope.NumberFeed = 0;
-                $scope.All_Isread = true;
+                
+                // $scope.All_Isread = true;
                 for (i = 0; i < $scope.resultNewFeed.length; i++) {
                     if($scope.resultNewFeed[i].Isread == "0")
                     {
-                         $scope.NumberFeed = $scope.NumberFeed + 1 ;
-                         $scope.All_Isread = false;
+                         $scope.NumberFeed = $scope.NumberFeed + 1;
+                        //  $scope.All_Isread = false;
                     }
                 }
             });
@@ -307,9 +319,9 @@ angular.module('PM.controller', ['ngRoute', 'ngStorage', 'angular-md5', 'PM.Serv
         //Auth
         $scope.allow = function(index){
             cfpLoadingBar.start();
-            for (var i = 0; i < $scope.Email_Per.length; i++) {
+            for (var i = 0; i < $scope.Auth_Per.length; i++) {
                 if (index == i) {
-                    apiService.AllowPermission($scope.Email_Per[i].Email).then(function (response) {
+                    apiService.AllowPermission($scope.Auth_Per[i].Email).then(function (response) {
                         if (response.data._error_code == "00") {
                             getpermossion();
                             $scope.alert_success = response.data._error_messenger;
@@ -325,12 +337,24 @@ angular.module('PM.controller', ['ngRoute', 'ngStorage', 'angular-md5', 'PM.Serv
             }
         }
 
+        $scope._detail_per = function(idx){
+             for (var i = 0; i < $scope.Auth_Per.length; i++) {
+                 if(idx == i){
+                      ngDialog.open({
+                        template: '<div style="padding:5px"><h4 style="color:#D4921D;">'+$scope.Auth_Per[i].Title+'</h4><hr style="margin-top:10px; margin-bottom:10px"/><p>'+$scope.Auth_Per[i].Reasons_For_Leave+'</p><hr/><h6>Ngày Nghỉ : '+$scope.Auth_Per[i].Leave_day+' - '+$scope.Auth_Per[i].To_Day_Leave+'</h6><hr/><h6>Tổng số ngày: '+$scope.Auth_Per[i].Total_Day_leave+'</h6></div>',
+                        plain: true,
+                        showClose: false,
+                    });
+                 }
+             }
+        }
+
         $scope.reset = function (index) {
             cfpLoadingBar.start();
-            for (var i = 0; i < $scope.Email_forgot.length; i++) {
+            for (var i = 0; i < $scope.Auth_forgot.length; i++) {
                 if (index == i) {
                     rsapassword = md5.createHash("123456");
-                    apiService.postReset($scope.Email_forgot[i].Email, rsapassword).then(function (response) {
+                    apiService.postReset($scope.Auth_forgot[i].Email, rsapassword).then(function (response) {
                         if (response.data._error_code == "00") {
                             getrequest();
                             $scope.alert_success = response.data._error_messenger;
@@ -502,15 +526,13 @@ angular.module('PM.controller', ['ngRoute', 'ngStorage', 'angular-md5', 'PM.Serv
     })
     .controller('LoginCtrl', function ($rootScope, $scope, $localStorage, $timeout, md5, $http, apiService, ngDialog, cfpLoadingBar) {
         window.localStorage.clear(true);
-        var json = 'http://ipv4.myexternalip.com/json';
+        var json = 'https://api.ipify.org?format=json';
         $http.get(json).then(function (result) {
             svip = result.data.ip;
             svip = svip.slice(0, 9);
             $scope.yourip = svip;
         }, function (e) {
-            // alert("error");
         });
-
 
         //alert
        $scope._alert_error = function () {
@@ -551,7 +573,7 @@ angular.module('PM.controller', ['ngRoute', 'ngStorage', 'angular-md5', 'PM.Serv
                                 window.location.href = '#/home';
                             }
                             else {
-                                $scope.alert = "Username or Password incorrect, Please try again";
+                                $scope.alert = "Username or Password incorrect";
                                 $scope._alert_error();
                             }
                             cfpLoadingBar.complete();

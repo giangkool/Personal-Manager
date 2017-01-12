@@ -30,12 +30,10 @@
 </ul>
 <!--customer form-->
 <form class="form-inline" ng-show="Auth.Role == 'customer'">
-    <a ng-show="!All_Isread" class="nav-link" style="font-size: 22px; margin-right: 15px; font-weight: 300" data-toggle="modal" data-target="#myModal7" data-backdrop="static" data-keyboard="false"><i class="fa fa-globe ipnotsuport"
-    aria-hidden="true" style="font-size: 22px; margin-top: 15px; margin-right: 3px;"></i>
-<span style="position: absolute; margin-top: -20px; margin-left: 15px; font-size: 17px;">{{NumberFeed}}</span>
-</a>
-<a ng-show="All_Isread" class="nav-link" style="font-size: 22px; margin-right: 15px; font-weight: 300" data-toggle="modal" data-target="#myModal7" data-backdrop="static" data-keyboard="false"><i class="fa fa-globe"
-    aria-hidden="true" style="font-size: 22px; margin-top: 15px; margin-right: 3px;"></i>
+    <a class="nav-link" style="font-size: 22px; margin-right: 15px; font-weight: 300" data-toggle="modal" data-target="#myModal7" data-backdrop="static" data-keyboard="false">
+     <notification-icon animation="bounce" count="NumberFeed">
+<i class="fa fa-globe" aria-hidden="true" style="font-size: 25px; margin-top: 15px; margin-right: 3px;"></i>
+</notification-icon>
 </a>
 
  <!--Dropdown dark-->
@@ -57,10 +55,12 @@
 </form>
 <!--addmin form-->
 <form class="form-inline" ng-show="Auth.Role == 'admin'">
-    <a class="nav-link" style="font-size: 18px; margin-right: 15px; font-weight: 300" data-toggle="modal" data-target="#myModal5" data-backdrop="static" data-keyboard="false" ng-show="Number_forgot || Number_Per"><i class="fa fa-bell-o"
-    aria-hidden="true" style="font-size: 18px; margin-top: 15px; margin-right: 3px;"></i>
-<span style="position: absolute; margin-top: -21px; margin-left: 17px;"> {{Number_forgot + Number_Per}}
-</span>
+    <a class="nav-link" style="font-size: 18px; margin-right: 15px; font-weight: 300" data-toggle="modal" data-target="#myModal5" data-backdrop="static" data-keyboard="false" ng-show="Number_forgot || Number_Per">
+      <notification-icon animation="bounce" count="Number_forgot + Number_Per">
+    <i class="fa fa-bell-o" aria-hidden="true" style="font-size: 22px; margin-top: 15px; margin-right: 3px;"></i>
+</notification-icon>
+        
+</span>-->
 </a>
 <a class="nav-link" style="font-size: 18px; margin-right: 15px; font-weight: 300" ng-show="!Number_forgot && !Number_Per"><i class="fa fa-bell-slash-o" aria-hidden="true" style="font-size: 18px; margin-top: 15px; margin-right: 3px;"></i>
 </a>
@@ -93,9 +93,9 @@
     <div class="full-bg-img flex-center">
         <ul class="animated fadeInUp">
             <li>
-                <h1 class="h1-responsive">Welcome,
+                <h1 class="h1-responsive">{{sayhello}},
                     <a class="waves-effect waves-light" ng-click="Getweek()" data-toggle="modal" data-target="#myModal" data-backdrop="static"
-                        data-keyboard="false" style="color: #FFA92C;">@{{Auth.Fullname}}</a>
+                        data-keyboard="false" style="color: #FFA92C;">{{Auth.Fullname}}</a>
 </h1>
 </li>
 <li>
@@ -161,7 +161,7 @@
             <div id="style-3" class="modal-body" style="padding-bottom: 0px; height: 450px; overflow-y: auto;">
 
                 <div class="qa-message-list" id="wallmessages" ng-repeat="content in resultNewFeed track by $index">
-
+                 
     				<div ng-click="_detail_new_feed($index)"  class="message-item" id="m16">
 						<div class="message-inner">
 							<div class="message-head clearfix">
@@ -181,6 +181,7 @@
 											<span class="qa-message-who">
 												<span class="qa-message-who-pad" style="color: #9B9C9C">by </span>
                                                 <span class="qa-message-who-data" style="color: #9B9C9C"><a href="">{{content.Name}}</a></span>
+                                                <i class="fa fa-eye" aria-hidden="true" style="color:#7FBA00; margin-left: 3px "> <span style="margin-left: 3px">{{content.List_user.length}}</span></i>
 											</span>
 										</div>
 									</div>
@@ -263,13 +264,13 @@
             </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="item in Email_forgot track by $index" ng-show="Number_forgot !='0'">
-                    <td><h6 style="font-size: 17px ;font-weight: 400">{{item.Email}}</h6></td>
+                <tr ng-repeat="item in Auth_forgot track by $index" ng-show="Number_forgot !='0'">
+                    <td><h6 style="font-size: 17px ;font-weight: 400">{{item.Name}}</h6></td>
                     <td style="text-align: center;"><a href="" data-toggle="tooltip" data-placement="top" title="Reset user password" ng-click="reset($index)" style=" color: limegreen"><i class="fa fa-recycle" style="font-size: 20px" aria-hidden="true"></i></a></td>
                     <td></td>
             </tr>
-            <tr ng-repeat="item in Email_Per track by $index" ng-show="Number_Per !='0'">
-                    <td><h6 style="font-size: 17px ;font-weight: 400">{{item.Email}}</h6></td>
+            <tr ng-repeat="item in Auth_Per track by $index" ng-show="Number_Per !='0'">
+                    <td><a ng-click="_detail_per($index)"><h6 style="font-size: 17px ;font-weight: 400">{{item.Name}}</h6></a></td>
                     <td></td>
                     <td style="text-align: center;"><a href="" data-toggle="tooltip" data-placement="top" title="Allow Permission" ng-click="allow($index)"><i class="fa fa-check-square" style="font-size: 20px" aria-hidden="true"></i></a></td>
             </tr>
@@ -407,7 +408,7 @@
             </div>
             <div class="modal-body" style="padding-bottom: 0px;">
 
-
+<div class="table-responsive">
 <table class="table table-striped">
     <thead>
         <tr>
@@ -423,6 +424,7 @@
 </tr>
 </tbody>
 </table>
+</div>
 
 </div>
 <hr style="margin-bottom: 0; width: 95%"/>
