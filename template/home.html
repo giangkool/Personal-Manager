@@ -417,8 +417,8 @@
 <tbody style="color:blue; text-align: center">
 <tr>
     <td ng-repeat="content in list_time">
-        <i class="fa fa-times" aria-hidden="true" style="color: red; font-size: 25px" ng-show="!content.CHECKOUT"></i>
-<i class="fa fa-check-square" aria-hidden="true" style="color: #00B62D; font-size: 25px" ng-show="content.CHECKOUT"></i>
+        <i class="fa fa-times" aria-hidden="true" style="color: red; font-size: 25px" ng-show="!content.CHECKOUT_TIME"></i>
+<i class="fa fa-check-square" aria-hidden="true" style="color: #00B62D; font-size: 25px" ng-show="content.CHECKOUT_TIME"></i>
 </td>
 </tr>
 </tbody>
@@ -460,7 +460,5 @@
 
 
 <script>
-    $(function () {
-    $('[data-toggle="tooltip"]').tooltip()
-    })
+
 </script>
