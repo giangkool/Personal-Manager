@@ -1,0 +1,47 @@
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title">Notifications</h4>
+        </div>
+
+        <div id="style-3" class="modal-body" style="padding-bottom: 0px; height: 450px; overflow-y: auto;">
+<div class="qa-message-list" id="wallmessages" ng-repeat="content in resultNewFeed track by $index">
+    <div ng-click="_detail_new_feed($index)" class="message-item" id="m16">
+        <div class="message-inner">
+            <div class="message-head clearfix">
+                <div class="avatar pull-left">
+                    <i ng-show="content.Isread =='0'" class="fa fa-coffee fa-2x" aria-hidden="true" style="margin-right: -10px; color: #B55902"></i>
+<i ng-show="content.Isread =='1'" class="fa fa-coffee fa-2x" aria-hidden="true" style="margin-right: -10px; color: #979797"></i>
+</div>
+<div class="user-detail">
+    <h5 ng-show="content.Isread == '0'" class="handle crop" style="color:#D4921D ">{{content.Title}}</h5>
+<h5 ng-show="content.Isread == '1'" class="handle crop" style="color:#979797 ">{{content.Title}}</h5>
+<div class="post-meta crop" style="margin-top:2px">
+<div class="asker-meta">
+    <span class="qa-message-what"></span>
+    <span class="qa-message-when">
+                                                <span class="qa-message-when-data" style="color: #9B9C9C">{{content.NewFeed_time}}</span>
+</span>
+<span class="qa-message-who">
+												<span class="qa-message-who-pad" style="color: #9B9C9C">by </span>
+<span class="qa-message-who-data" style="color: #9B9C9C"><a href="">{{content.Name}}</a></span>
+<i class="fa fa-eye" aria-hidden="true" style="color:#7FBA00; margin-left: 3px " ng-show="content.List_user.length > 0"> <span style="margin-left: 3px">{{content.List_user.length}}</span>
+</i>
+</span>
+</div>
+</div>
+</div>
+</div>
+<div class="qa-message-content">
+    <p class="crop" ng-bind-html="content.Less_content | unsafe"></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="modal-footer" style="padding: 7px; border-top: transparent">
+<button type="button" class="btn grey darken-4" data-dismiss="modal">Close</button>
+</div>
+</div>
+</div>

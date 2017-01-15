@@ -1,0 +1,55 @@
+<div class="full-bg-img flex-center">
+    <div class="container">
+        <div class="row" id="home">
+
+            <!--Second column-->
+                    <div class="col-lg-4 offset-lg-1">
+                        <ul class="animated fadeInDown">
+                            <li>
+                                <h1 style="font-size: 80px; text-align: left; margin-top: -15px">{{clock | date:'HH:mm'}}</h1>
+                            </li>
+                            <li>
+                                 <h2 style="font-weight: 400; text-align: left">{{ clock | date:'EEEE, MMMM dd'}}</h2>
+                            </li>
+                        </ul>
+                        
+                     
+                    </div>
+                    <!--/Second column-->
+
+
+            <!--First column-->
+                    <div class="col-lg-6">
+                        <div class="description">
+                            
+                             <ul class="animated fadeInUp">
+                                            <li>
+                                                <h1 class="h1-responsive">
+                                                    <a class="waves-effect waves-light" ng-click="Getweek()" data-toggle="modal" data-target="#myModal" data-backdrop="static"
+                                                        data-keyboard="false" style="color: #fff; font-weight: 400">
+                            <span class="tag black" style="border: 1px solid #fff; color: #fff">{{Auth.Role}}</span>
+                            {{Auth.Fullname}}
+                            </a>
+                            </h1>
+                            <hr class="hr-dark" style="height: 0.5px"/>
+                            </li>
+
+                            
+                            <li ng-show="ip">
+                                <a href="" class="btn waves-effect waves-light btn-lg active" ng-click="checkin()" ng-show="!show" style="border: .5px solid #fff; color: #fff; background: #1B5E20">Check in</a>
+                                <a id="checkout" ng-class="myDynamicClass" href="" class="btn waves-effect waves-light red accent-4 btn-lg" ng-click="checkout()"
+                                    ng-show="show" style="border: .5px solid #fff; color: #fff; background: #CC0000">Check out</a>
+                            </li>
+                            <li ng-show="!ip">
+                                <h2 class="ipnotsuport">Your ip is not supported <i class="fa fa-smile-o" aria-hidden="true"></i></h2>
+                            </li>
+                            </ul>
+
+                        </div>
+                    </div>
+                    <!--/.First column-->
+
+                     
+
+</div>
+</div>

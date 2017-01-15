@@ -243,8 +243,8 @@ font-size: 12px;
 line-height: 22px;
 }
 img {
- min-height: 40px;
- max-height: 40px;
+ min-height: 60px;
+ max-height: 60px;
 }
 
 .crop {  
@@ -302,3 +302,55 @@ input[type="date"] {
 {
 	background-color: #C1C1C1;
 }
+select#soflow{
+   -webkit-appearance: button;
+   -webkit-border-radius: 2px;
+   -webkit-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
+   -webkit-padding-end: 20px;
+   -webkit-padding-start: 2px;
+   -webkit-user-select: none;
+   background-image: url(http://i62.tinypic.com/15xvbd5.png), -webkit-linear-gradient(#FAFAFA, #F4F4F4 40%, #E5E5E5);
+   background-position: 97% center;
+   background-repeat: no-repeat;
+   border: 1px solid #AAA;
+   color: #555;
+   font-size: inherit;
+   margin-bottom: 20px;
+   overflow: hidden;
+   padding: 5px 10px;
+   text-overflow: ellipsis;
+   white-space: nowrap;
+   width: 76%;
+}
+
+.autocomplete-template .left-panel {
+  float: left;
+}
+
+.autocomplete-template .left-panel img {
+  width: 48px;
+  height: 48px;
+  vertical-align: middle;
+}
+
+.autocomplete-template .right-panel {
+  float: left;
+  margin-left: 5px;
+  margin-top: 7px;
+}
+
+.autocomplete-template .right-panel span:first-child {
+  font-size: 16px;
+}
+
+.autocomplete-template .right-panel span:nth-child(2) {
+  font-size: 14px;
+  color: gray;
+}
+
+.autocomplete-template .right-panel span:last-child {
+  display: block;
+  font-size: 14px;
+  font-style: italic;
+}
+

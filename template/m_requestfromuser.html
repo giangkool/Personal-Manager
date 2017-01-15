@@ -1,0 +1,45 @@
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title">Request From User </h4>
+        </div>
+
+        <div class="modal-body" style="padding-bottom: 0px;">
+<table width="100%" class="table table-striped">
+    <thead>
+        <tr>
+            <th>Email</th>
+            <th style="text-align: center">Title</th>
+<th style="text-align: center"></th>
+</tr>
+</thead>
+<tbody>
+    <tr ng-repeat="item in Auth_forgot track by $index" ng-show="Number_forgot !='0'">
+        <td>
+            <h6 style="font-size: 17px ;font-weight: 400">{{item.Name}}</h6>
+</td>
+<td>{{item.Request}}</td>
+<td style="text-align: center;"><a href="" data-toggle="tooltip" data-placement="top" title="Reset user password" ng-click="reset($index)" style=" color: limegreen"><i class="fa fa-recycle" style="font-size: 20px" aria-hidden="true"></i>
+</a>
+</td>
+
+</tr>
+<tr ng-repeat="item in Auth_Per track by $index" ng-show="Number_Per !='0'">
+    <td><a ng-click="_detail_per($index)"><h6 style="font-size: 17px ;font-weight: 400; color: #3879D9">{{item.Name}}</h6>
+</a>
+</td>
+<td>{{item.Title}} <b>{{item.Leave_day}}</b></td>
+<td style="text-align: center;">
+<a href="" data-placement="top" title="Allow Permission" ng-click="allowRequest($index)"><i class="fa fa-check-square" style="font-size: 20px" aria-hidden="true"></i>
+</a>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<div class="modal-footer" style="padding: 7px; border-top: transparent">
+<button type="button" class="btn grey darken-4" data-dismiss="modal">Close</button>
+</div>
+</div>
+</div>

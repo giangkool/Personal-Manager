@@ -1,0 +1,33 @@
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title">Working Time In Week</h4>
+        </div>
+
+        <div class="modal-body" style="padding-bottom: 0px;">
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th style="text-align: center" ng-repeat="content in list_time">{{content.CHECKIN_DAY}}</th>
+</tr>
+</thead>
+<tbody style="color:blue; text-align: center">
+<tr>
+    <td ng-repeat="content in list_time">
+        <i class="fa fa-times" aria-hidden="true" style="color: red; font-size: 25px" ng-show="!content.CHECKOUT_TIME"></i>
+<i class="fa fa-check-square" aria-hidden="true" style="color: #00B62D; font-size: 25px" ng-show="content.CHECKOUT_TIME"></i>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<hr style="margin-bottom: 0; width: 95%"/>
+<div class="modal-footer" style="padding: 7px; border-top: transparent">
+<button type="button" class="btn waves-effect waves-light  green darken-4" ng-click="Userexport()">Export Excel</button>
+<button id="closes" type="button" class="btn grey darken-4" data-dismiss="modal">Close</button>
+</div>
+</div>
+</div>

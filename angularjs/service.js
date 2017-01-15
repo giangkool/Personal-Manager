@@ -21,8 +21,8 @@ angular.module('PM.Service', [])
                 url = api_gateway_url + 'Forgot?';
                 return $http.post(url + parameter);
             },
-            postRegister: function (username, password, fullname, mobile, role) {
-                parameter = '&email=' + username + '&password=' + password + '&fullname='+ fullname + '&mobile='+ mobile + '&role=' + role;
+            postRegister: function (username, password, fullname, mobile, role_name, role_id) {
+                parameter = '&email=' + username + '&password=' + password + '&fullname='+ fullname + '&mobile='+ mobile + '&role_name=' + role_name + '&role_id='+role_id;
                 url = api_gateway_url + 'Register?';
                 return $http.post(url + parameter);
             },
@@ -31,13 +31,13 @@ angular.module('PM.Service', [])
                 url = api_gateway_url + 'Change?';
                 return $http.post(url + parameter);
             },
-            postPermission: function(Email, title, content, fromdayleave, todayleave){
-                parameter = '&email=' + Email + '&title=' + title + '&content='+ content+'&fromdayleave='+fromdayleave+'&todayleave='+todayleave;
+            postPermission: function(Email, title, type, content, fromdayleave, todayleave){
+                parameter = '&email=' + Email + '&title=' + title + '&type='+ type +'&content='+ content+'&fromdayleave='+fromdayleave+'&todayleave='+todayleave;
                 url = api_gateway_url + 'Permission?';
                 return $http.post(url + parameter);
             },
-            AllowPermission: function(Email){
-                parameter = '&email=' + Email;
+            AllowPermission: function(Email, _id, checkin_day){
+                parameter = '&email=' + Email + '&id='+ _id +'&Checkin_day=' + checkin_day;
                 url = api_gateway_url + 'AllowPermission?';
                 return $http.post(url + parameter);
             },
@@ -86,8 +86,8 @@ angular.module('PM.Service', [])
                 url = api_gateway_url + 'Request?';
                 return $http.post(url + parameter);
             },
-            PostNewFeed: function(Email, title, less_content, content, important){
-                parameter ="&email=" + Email + "&title="+ title+'&less_content='+less_content+'&content='+content+'&important='+important;
+            PostNewFeed: function(Email, title, less_content, content, group_id, group_name){
+                parameter ="&email=" + Email + "&title="+ title+'&less_content='+less_content+'&content='+content+'&group_id='+group_id+'&group_name='+group_name;
                 url = api_gateway_url + 'CreateNewFeed?';
                 return $http.post(url + parameter);
             },
