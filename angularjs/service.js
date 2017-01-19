@@ -7,7 +7,7 @@ angular.module('PM.Service', [])
         var contents = [];
         return {
             postLogin: function (username, password, yourip) {
-                parameter = '&email=' + username + '&password=' + password + '&ip=' +yourip;
+                parameter = '&passcode=' + username + '&password=' + password + '&ip=' +yourip;
                 url = api_gateway_url + 'Login?';
                 return $http.post(url + parameter);
             },
@@ -16,13 +16,18 @@ angular.module('PM.Service', [])
                 url = api_gateway_url + 'Reset?';
                 return $http.post(url + parameter);
             },
+            postNextpasscode: function(){
+                parameter ='';
+                url = api_gateway_url + 'Nextpasscode?';
+                return $http.post(url + parameter); 
+            },
             postForgot: function (username) {
-                parameter = '&email=' + username;
+                parameter = '&passcode=' + username;
                 url = api_gateway_url + 'Forgot?';
                 return $http.post(url + parameter);
             },
-            postRegister: function (username, password, fullname, mobile, role_name, role_id) {
-                parameter = '&email=' + username + '&password=' + password + '&fullname='+ fullname + '&mobile='+ mobile + '&role_name=' + role_name + '&role_id='+role_id;
+            postRegister: function (username, password, fullname, mobile, role_name, role_id, passcode) {
+                parameter = '&email=' + username + '&password=' + password + '&fullname='+ fullname + '&mobile='+ mobile + '&role_name=' + role_name + '&role_id='+role_id+'&passcode='+passcode;
                 url = api_gateway_url + 'Register?';
                 return $http.post(url + parameter);
             },
@@ -41,9 +46,24 @@ angular.module('PM.Service', [])
                 url = api_gateway_url + 'AllowPermission?';
                 return $http.post(url + parameter);
             },
-            AllPermission:function(){
+            AllPermission: function(){
                 parameter ="";
                 url = api_gateway_url + 'AllPermission?';
+                return $http.post(url + parameter);
+            },
+            GetListUser: function(){
+                parameter ="";
+                url = api_gateway_url + 'ListUser?';
+                return $http.get(url + parameter);
+            },
+            PostUpdateProfile: function(passcode, name, email, mobile, role_name, role_id){
+                parameter ="&passcode=" +passcode+ '&name=' +name+ '&email=' +email+ '&mobile=' +mobile+ '&role_name=' +role_name+ '&role_id=' +role_id;
+                url = api_gateway_url + 'UpdateProfileById?';
+                return $http.post(url + parameter);
+            },
+            PostDelete: function(passcode){
+                parameter ="&passcode=" +passcode;
+                url = api_gateway_url + 'Delete?';
                 return $http.post(url + parameter);
             }
         }

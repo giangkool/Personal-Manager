@@ -12,7 +12,7 @@
 		<img src="img/devlogo.png">
 		
 		<form class="form">
-			<input type="text" ng-model="data.username" placeholder="Username">
+			<input type="text" onkeyup="this.value=this.value.replace(/[^0-9]/g,'');" ng-model="data.username" placeholder="Username">
 			<input type="password" ng-model="data.password" placeholder="Password">
       <!--<a style="display: block;width:300px; text-align:left; margin: 0 auto 10px auto; text-decoration: none; color: #fff; font-weight: lighter" confirmed-click="forgot(data)" ng-confirm-click="Are you sure forgot passowrd ?" href="">forgot your password ?</a>-->
       <a style="display: block;width:300px; text-align:left; margin: 0 auto 10px auto; text-decoration: none; color: #fff; font-weight: lighter" href="" ng-click="forgot(data)">forgot your password ?</a>

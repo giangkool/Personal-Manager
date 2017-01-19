@@ -6,7 +6,7 @@ pm
         $http.get(json).then(function (result) {
             svip = result.data.ip;
             svip = svip.slice(0, 9);
-            $scope.yourip = "27.74.79.";
+            $scope.yourip = svip;
         }, function (e) {
         });
 

@@ -8,7 +8,7 @@
 <table width="100%" class="table table-striped">
     <thead>
         <tr>
-            <th>Email</th>
+            <th>Name</th>
             <th style="text-align: center">Title</th>
 <th style="text-align: center"></th>
 </tr>
@@ -28,7 +28,7 @@
     <td><a ng-click="_detail_per($index)"><h6 style="font-size: 17px ;font-weight: 400; color: #3879D9">{{item.Name}}</h6>
 </a>
 </td>
-<td>{{item.Title}} <b>{{item.Leave_day}}</b></td>
+<td class="crop">{{item.Title}} <b>{{item.Leave_day}}</b></td>
 <td style="text-align: center;">
 <a href="" data-placement="top" title="Allow Permission" ng-click="allowRequest($index)"><i class="fa fa-check-square" style="font-size: 20px" aria-hidden="true"></i>
 </a>

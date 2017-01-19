@@ -51,6 +51,11 @@ var pm = angular.module('PM.controller', ['ngRoute', 'ngStorage', 'angular-md5',
             }
         });
 
+        apiService.postNextpasscode().then(function(response){
+            if (response.data) {
+                $scope.next_passcode = response.data;
+            }
+        });
 
          CheckinService.Getall().then(function (response) {
             if (response.data) {
@@ -133,8 +138,8 @@ var pm = angular.module('PM.controller', ['ngRoute', 'ngStorage', 'angular-md5',
         $scope.group_user = [
             {Name:'Select an group'},
             {Name:'All User', value: 1},
-            {Name:'Business Analyst', Value: 2},
-            {Name:'Developers', Value: 3}
+            {Name:'Business Analyst', value: 2},
+            {Name:'Developers', value: 3}
         ];
         $scope.selected_user = $scope.group_user[0];
         $scope.CreateNewFeed = function(data){
@@ -150,14 +155,14 @@ var pm = angular.module('PM.controller', ['ngRoute', 'ngStorage', 'angular-md5',
                         less_content = content_feed;
                         if(less_content.length > 100) less_content = less_content.substring(0,100);
                         
-                        CheckinService.PostNewFeed($scope.Auth.Email, data.title, less_content, content_feed, $scope.selected_user.Value, $scope.selected_user.Name).then(function (response) {
+                        CheckinService.PostNewFeed($scope.Auth.Email, data.title, less_content, content_feed, $scope.selected_user.value, $scope.selected_user.Name).then(function (response) {
                             if (response.data._error_code == "00") {
                                 $scope.alert_success = response.data._error_messenger
                                 Notifi._alert_success($scope.alert_success);
                                 getallnewfeed();
                                 data.title = null;
                                 data.content = null;
-                                $scope.checkboxModel.value =false;
+                                $scope.selected_user = $scope.group_user[0];
                             }
                             else {
                                 $scope.alert = response.data._error_messenger
@@ -189,7 +194,7 @@ var pm = angular.module('PM.controller', ['ngRoute', 'ngStorage', 'angular-md5',
                 }
             }
                 ngDialog.open({
-                    template: '<div style="padding:5px"><h4 style="color:#D4921D;">'+title_newfeed+'</h4><hr style="margin-top:10px; margin-bottom:10px"/><p>'+content_newfeed+'</p><span style="float:right; margin-top:-10px; color:#9B9C9C; font-weight:100">by <a style="color:#2DB7E9">'+auth_newfeed+'</a></span></div>',
+                    template: '<div style="padding:5px; padding-top:0"><h4 style="color: #4A69A3;">'+title_newfeed+'</h4><hr style="margin-top:10px; margin-bottom:10px"/><p>'+content_newfeed+'</p><hr><span style="float:right; margin-top:-10px; color:#9B9C9C; font-weight:100; font-size:15px">by <a style="color: #4A69A3">'+auth_newfeed+'</a></span></div>',
                     plain: true,
                     showClose: false,
                 });
@@ -307,7 +312,7 @@ var pm = angular.module('PM.controller', ['ngRoute', 'ngStorage', 'angular-md5',
             else {
                 if ($scope.selected_role.Name != $scope.role_user[0].Name && data.email && data.password && data.fullname && data.mobile) {
                     rsapassword = md5.createHash(data.password);
-                    apiService.postRegister(data.email, rsapassword, data.fullname, data.mobile, $scope.selected_role.Name, $scope.selected_role.Value).then(function (response) {
+                    apiService.postRegister(data.email, rsapassword, data.fullname, data.mobile, $scope.selected_role.Name, $scope.selected_role.Value, $scope.next_passcode).then(function (response) {
                         if(response.data._error_code == "00"){
                             $scope.alert_success = response.data._error_messenger
                             Notifi._alert_success($scope.alert_success);
@@ -315,7 +320,7 @@ var pm = angular.module('PM.controller', ['ngRoute', 'ngStorage', 'angular-md5',
                             data.password = null;
                             data.fullname = null;
                             data.mobile = null;
-                            $scope.checkboxModel.value =false;
+                            $scope.selected_role = $scope.role_user[0];
                         }
                         else{
                              $scope.alert = response.data._error_messenger
@@ -331,14 +336,158 @@ var pm = angular.module('PM.controller', ['ngRoute', 'ngStorage', 'angular-md5',
             }
         }
 
+        $scope.GetListUser = function(){
+            apiService.GetListUser().then(function(response){
+                if(response.data)
+                {
+                    $scope.ListUser = response.data;
+                }
+            });
+        }
 
+        $scope.selected_update_role = $scope.role_user[0];
+        $scope.UpdateProfile = function (idx) {
+            $scope.edit = true;
+            for (i = 0; i < $scope.ListUser.length; i++) {
+                if (idx == i) {
+                    $scope.profile_detail = $scope.ListUser[i];
+                }
+            }
+            $scope.edit_profile = function (data) {
+                ngDialog.openConfirm({
+                    template:
+                    '<div class="ngdialog-message">' +
+                    '  <h3 class="confirmation-title"><i class="fa fa-exclamation-triangle"></i> Are you sure update user ?</h3><br/>' +
+                    '    <div class="ngdialog-buttons">' +
+                    '      <button type="button" class="ngdialog-button btn-success" ng-click="confirm(confirmValue)">Okay</button>' +
+                    '      <button type="button" class="ngdialog-button btn-primary" ng-click="closeThisDialog()">Cancel</button>' +
+                    '    </div>' +
+                    '</div>',
+                    plain: true,
+                    showClose: false,
+                }).then(function (confirm) {
+
+                    cfpLoadingBar.start();
+                    var new_role_name;
+                    var new_role_value;
+                    var new_name;
+                    var new_email;
+                    var new_mobile;
+
+                    if ($scope.selected_update_role.Name != $scope.role_user[0].Name) {
+                        new_role_name = $scope.selected_update_role.Name;
+                        new_role_value = $scope.selected_update_role.Value;
+                    } else {
+                        for (i = 0; i < $scope.role_user.length; i++) {
+                            if ($scope.profile_detail.Role_name == $scope.role_user[i].Name) {
+                                new_role_name = $scope.role_user[i].Name;
+                                new_role_value = $scope.role_user[i].Value;
+                            }
+                        }
+                    }
+                    if (data == undefined) {
+                        apiService.PostUpdateProfile($scope.profile_detail.Passcode, $scope.profile_detail.Name, $scope.profile_detail.Email, $scope.profile_detail.Mobile, new_role_name, new_role_value).then(function (response) {
+                            if (response.data._error_code == "00") {
+                                $scope.alert_success = response.data._error_messenger
+                                Notifi._alert_success($scope.alert_success);
+                                $scope.GetListUser();
+                                 $scope.selected_update_role = $scope.role_user[0];
+                            }
+                            else {
+                                $scope.alert = response.data._error_messenger
+                                Notifi._alert_error($scope.alert);
+                            }
+                            cfpLoadingBar.complete();
+                        });
+                    } else {
+                        if (data.name != undefined) {
+                            new_name = data.name
+                        } else {
+                            new_name = $scope.profile_detail.Name;
+                        }
+
+                        if (data.email != undefined) {
+                            new_email = data.email;
+                        } else {
+                            new_email = $scope.profile_detail.Email;
+                        }
+
+                        if (data.mobile != undefined) {
+                            new_mobile = data.mobile
+                        } else {
+                            new_mobile = $scope.profile_detail.Mobile;
+                        }
+
+                        apiService.PostUpdateProfile($scope.profile_detail.Passcode, new_name, new_email, new_mobile, new_role_name, new_role_value).then(function (response) {
+                            if (response.data._error_code == "00") {
+                                $scope.alert_success = response.data._error_messenger
+                                Notifi._alert_success($scope.alert_success);
+                                $scope.GetListUser();
+                                $scope.selected_update_role = $scope.role_user[0];
+                            }
+                            else {
+                                $scope.alert = response.data._error_messenger
+                                Notifi._alert_error($scope.alert);
+                            }
+                            cfpLoadingBar.complete();
+                        });
+                    }
+                }, function (reject) {
+                });
+            };
+        }
+
+        $scope.DeleteUser = function (idx) {
+            ngDialog.openConfirm({
+                    template:
+                    '<div class="ngdialog-message">' +
+                    '  <h3 class="confirmation-title"><i class="fa fa-exclamation-triangle"></i> Are you sure delete user ?</h3><br/>' +
+                    '    <div class="ngdialog-buttons">' +
+                    '      <button type="button" class="ngdialog-button btn-danger" ng-click="confirm(confirmValue)">Okay</button>' +
+                    '      <button type="button" class="ngdialog-button btn-success" ng-click="closeThisDialog()">Cancel</button>' +
+                    '    </div>' +
+                    '</div>',
+                    plain: true,
+                    showClose: false,
+                }).then(function (confirm) {
+                    
+                    cfpLoadingBar.start();
+                    for (i = 0; i < $scope.ListUser.length; i++) {
+                        if (idx == i) {
+                            $scope.profile_detail = $scope.ListUser[i];
+                        }
+                    }
+                    apiService.PostDelete($scope.profile_detail.Passcode).then(function (response) {
+                        if (response.data._error_code == "00") {
+                            $scope.alert_success = response.data._error_messenger
+                            Notifi._alert_success($scope.alert_success);
+                            $scope.GetListUser();
+                        } else {
+                            $scope.alert = response.data._error_messenger
+                            Notifi._alert_error($scope.alert);
+                        }
+                        cfpLoadingBar.complete();
+                    });
+
+                }, function(reject) {
+                });
+
+
+               
+        }
+
+        $scope.CancelUpdate = function(){
+            $scope.GetListUser();
+            $scope.edit = false;
+        }
+        
 
 //<-- function check in & check out -->
         $scope.checkin = function () {
+            $scope.show = true;
             cfpLoadingBar.start();
             CheckinService.postCheckin($scope.Auth.Email, checkin_day , DAY, DDAY).then(function (response) {
                     if (response.data._error_code == "00") {
-                        $scope.show = true;
                         $scope.alert_success ="Have a nice day <br/>"+'<span style="color:#FEA82B">'+$scope.Auth.Fullname+'</span>';
                         Notifi._alert_check($scope.alert_success);
                     }
@@ -375,8 +524,19 @@ var pm = angular.module('PM.controller', ['ngRoute', 'ngStorage', 'angular-md5',
             {Name:'Request for Leave', Value: 1},
             {Name:'Request for CheckIn', Value: 2}
         ];
+        // Initialization
+        jQuery('#datetimepicker').datetimepicker({
+            timepicker:false,
+            format:'d/m/Y'
+        });
+        jQuery('#datetimepicker2').datetimepicker({
+            timepicker:false,
+            format:'d/m/Y'
+        });
         $scope.selected_requestForm = $scope.request_form[0];
         $scope.Permission = function(data){
+           var fromdayleave = $('#datetimepicker').val();
+           var todayleave = $('#datetimepicker2').val();
             cfpLoadingBar.start();
              if (data == undefined) {
                 $scope.alert = "Input can not be blank";
@@ -384,15 +544,13 @@ var pm = angular.module('PM.controller', ['ngRoute', 'ngStorage', 'angular-md5',
                 cfpLoadingBar.complete();
             }
             else {
-                 if ($scope.selected_requestForm.Name != $scope.request_form[0].Name && data.content && data.fromdayleave && data.todayleave) {
-                     apiService.postPermission($scope.Auth.Email, $scope.selected_requestForm.Name, $scope.selected_requestForm.Value, data.content, data.fromdayleave, data.todayleave).then(function (response) {
+                 if ($scope.selected_requestForm.Name != $scope.request_form[0].Name && data.content && fromdayleave && todayleave) {
+                     apiService.postPermission($scope.Auth.Email, $scope.selected_requestForm.Name, $scope.selected_requestForm.Value, data.content, fromdayleave, todayleave).then(function (response) {
                          if(response.data._error_code =="00"){
                              $scope.alert_success = response.data._error_messenger
                              Notifi._alert_success($scope.alert_success);
                              $scope.selected_requestForm = $scope.request_form[0];
                              data.content = null;
-                             data.fromdayleave = null;
-                             data.todayleave = null;
                          } else{
                              $scope.alert = response.data._error_messenger
                              Notifi._alert_error($scope.alert);
@@ -474,7 +632,7 @@ var pm = angular.module('PM.controller', ['ngRoute', 'ngStorage', 'angular-md5',
 
         //ExportData to excel
         $scope.Userexport = function () {
-             alasql('SELECT * INTO XLS("'+$scope.Auth.Email+'.xls",?) FROM ?',[Userexport, $scope.list_time]);
+             alasql('SELECT * INTO XLS("'+$scope.Auth.Email+'.xls",?) FROM ?',[Userexport, $scope.full_list_time]);
         };
 
         $scope.Alluserexport = function () {

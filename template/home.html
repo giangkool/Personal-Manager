@@ -1,5 +1,6 @@
 <!-- Material Design Bootstrap -->
 <link href="css/mdb.min.css" rel="stylesheet">
+<header>
 
 <!--Navbar-->
 <nav class="navbar navbar-dark navbar-fixed-top scrolling-navbar">
@@ -8,7 +9,7 @@
 <!--/Navbar-->  
 
 <!--Mask-->
-<div id="supreme-container" class="view hm-black-strong">
+<div class="view hm-black-strong">
 <div ng-include=" 'template/auth.html' "></div>
 
 
@@ -29,8 +30,9 @@
     <label for="content">REASONS FOR REQUEST</label>
     <textarea class="form-control" rows="5" data-ng-model="data.content" id="New_feed_content"></textarea>
 </div>
-<input type="text" placeholder="Start day" class="form-control" ng-model="data.fromdayleave" onfocus="(this.type='date')" style="width:35%; display: inline-table;">
-<input type="text" placeholder="End day" class="form-control" ng-model="data.todayleave" onfocus="(this.type='date')" style="width:35%; display: inline-table; margin-left:5%">
+
+<input id="datetimepicker" type="text" placeholder="Start day" class="form-control"  style="width:35%; display: inline-table;">
+<input id="datetimepicker2" type="text" placeholder="End day" class="form-control" style="width:35%; display: inline-table; margin-left:5%">
 </div>
 <div class="modal-footer" style="padding: 7px; border-top: transparent">
 <button type="button" class="btn waves-effect waves-light  green darken-4" ng-click="Permission(data)">Send</button>
@@ -84,6 +86,70 @@
 </div>
 
 
+<!-- List user -->
+<div class="modal fade bd-example-modal-lg" id="myModal9" role="dialog">
+    <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title">List User</h4>
+        </div>
+
+        <div class="modal-body" style="padding-bottom: 0px; height: 450px; overflow-y: auto;">
+<div class="table-responsive">
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th style="text-align: center">Name</th>
+                <th style="text-align: center">Email</th>
+                <th style="text-align: center">Mobile</th>
+                <th style="text-align: center">Role</th>
+                <th style="text-align: center">Action</th>
+            </tr>
+        </thead>
+<tbody style="text-align: left">
+<tr ng-show="!edit" ng-repeat="content in ListUser track by $index">
+    <td>{{content.Name}}</td>
+    <td>{{content.Email}}</td>
+    <td style="text-align: center">{{content.Mobile}}</td>
+    <td style="text-align: center">{{content.Role}}</td>
+    <td style="text-align: center">
+        <a style="color: #018FE5; margin-right: 15px;" ng-click="UpdateProfile($index)"><i class="fa fa-pencil-square-o" aria-hidden="true" style="font-size: 22px"></i></a>
+        <a style="color: red;" ng-click="DeleteUser($index)"><i class="fa fa-trash" aria-hidden="true" style="font-size: 22px"></i></a>
+    </td>
+</tr>
+<tr ng-show="edit">
+    <td>
+        <input id="Name" type="text" ng-model="data.name" placeholder="{{profile_detail.Name}}" class="validate" required>
+    </td>
+    <td>
+        <input id="email" type="text" ng-model="data.email" placeholder="{{profile_detail.Email}}" class="validate" required>
+    </td>
+    <td>
+        <input id="Mobile" type="text" ng-model="data.mobile" placeholder="{{profile_detail.Mobile}}" class="validate" required>
+    </td>
+    <td style="width:200px">
+        <select id="soflow" ng-model="selected_update_role" ng-options="option.Name for option in role_user" style="width: 100%">
+        </select>
+    </td>
+    <td style="text-align: center; width: 100px">
+        <a style="color: #207144; margin-right: 15px;" ng-click="edit_profile(data)"><i class="fa fa-floppy-o" aria-hidden="true" style="font-size: 22px"></i></a>
+        <a style="color: red;" ng-click="CancelUpdate()"><i class="fa fa-window-close" aria-hidden="true" style="font-size: 22px"></i></a>
+    </td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<hr style="margin-bottom: 0; width: 95%"/>
+<div class="modal-footer" style="padding: 7px; border-top: transparent">
+<button id="closes" type="button" class="btn grey darken-4" data-dismiss="modal">Close</button>
+</div>
+</div>
+</div>
+</div>
+
+
 <!-- Create user -->
 <div class="modal fade" id="myModal3" role="dialog">
     <div class="modal-dialog">
@@ -117,6 +183,7 @@
 <br/>
 <select id="soflow" ng-model="selected_role" ng-options="option.Name for option in role_user">
 </select>
+<span style="margin-left: 20px">{{next_passcode}}</span>
 </div>
 <div class="modal-footer" style="padding: 7px; border-top: transparent">
 <button type="button" class="btn waves-effect waves-light  green darken-4" ng-click="register(data)">Create</button>
@@ -140,11 +207,11 @@
 
 </div>
 <!--/.Mask-->
-
+</header>
 
 
 <!--Footer-->
-<div class="footer-bottom" style="background: #161C27; color: #fff">
+<!--<div class="footer-bottom" style="background: #161C27; color: #fff">
 <div class="container">
     <div class="row">
         <div class="copyright" style="text-align: center; font-weight: 100"> © 2017, Personal Manager, All rights reserved <a href="#" style="color: #FDA72A">Hapit </a>
@@ -152,5 +219,5 @@
 </div>
 </div>
 </div>
-</div>
+</div>-->
 <!--/.Footer-->
