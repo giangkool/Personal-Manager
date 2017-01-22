@@ -6,8 +6,17 @@ var pm = angular.module('PM.controller', ['ngRoute', 'ngStorage', 'angular-md5',
         $scope.Auth = JSON.parse(auth);
         var date = new Date();
         var checkin_day = $filter('date')(new Date(), 'dd/MM/yyyy');
-
+        var daychangebg = $filter('date')(new Date(), 'EEEE');
+        
 //<-- function load when login -->
+        // change background daily day
+        // if(daychangebg == "Monday" || daychangebg == "Wednesday" || daychangebg == "Friday" || daychangebg == "Sunday"){
+        //     document.getElementById('view').style.backgroundImage="url(../img/weekbg/img2.jpg)";
+        // }
+        // else{
+        //     document.getElementById('view').style.backgroundImage="url(../img/weekbg/img.jpg)";
+        // }
+
         if(!auth){
              window.location.href = '#/login';
             return;
@@ -98,15 +107,26 @@ var pm = angular.module('PM.controller', ['ngRoute', 'ngStorage', 'angular-md5',
             CheckinService.GetAllNewFeed($scope.Auth.Email).then(function (response) {
                 $scope.resultNewFeed = response.data;
                 $scope.NumberFeed = 0;
-                
+                var role = 0;
+                var arr = [];
+                if($scope.Auth.Role == "dev"){
+                    role = 3;
+                }
+                if($scope.Auth.Role == "ba"){
+                    role = 2;
+                }
+
                 // $scope.All_Isread = true;
                 for (i = 0; i < $scope.resultNewFeed.length; i++) {
-                    if($scope.resultNewFeed[i].Isread == "0")
-                    {
-                         $scope.NumberFeed = $scope.NumberFeed + 1;
-                        //  $scope.All_Isread = false;
+                    if ($scope.resultNewFeed[i].Role == 1 || $scope.resultNewFeed[i].Role == role) {
+                        arr.push($scope.resultNewFeed[i]);
+                        if ($scope.resultNewFeed[i].Isread == "0") {
+                            $scope.NumberFeed = $scope.NumberFeed + 1;
+                            //  $scope.All_Isread = false;
+                        }
                     }
                 }
+                $scope.listnewforauth = arr;
             });
         }
 
@@ -153,6 +173,7 @@ var pm = angular.module('PM.controller', ['ngRoute', 'ngStorage', 'angular-md5',
                         var content_feed =  $('#New_feed_content').val();
                         content_feed = content_feed.replace(/\r?\n/g, '<br/>');
                         less_content = content_feed;
+                           
                         if(less_content.length > 100) less_content = less_content.substring(0,100);
                         
                         CheckinService.PostNewFeed($scope.Auth.Email, data.title, less_content, content_feed, $scope.selected_user.value, $scope.selected_user.Name).then(function (response) {
@@ -185,18 +206,18 @@ var pm = angular.module('PM.controller', ['ngRoute', 'ngStorage', 'angular-md5',
             var array_user = [];
             var tmp_user;
             var list_user;
-            for(i =0; i<$scope.resultNewFeed.length; i++){
+            for(i =0; i<$scope.listnewforauth.length; i++){
                 if(idx == i){
-                    title_newfeed = $scope.resultNewFeed[i].Title;
-                    content_newfeed = $scope.resultNewFeed[i].Content;
-                    auth_newfeed = $scope.resultNewFeed[i].Name;
-                    list_user = $scope.resultNewFeed[i].List_user;
+                    title_newfeed = $scope.listnewforauth[i].Title;
+                    content_newfeed = $scope.listnewforauth[i].Content;
+                    auth_newfeed = $scope.listnewforauth[i].Name;
+                    list_user = $scope.listnewforauth[i].List_user;
                 }
             }
                 ngDialog.open({
                     template: '<div style="padding:5px; padding-top:0"><h4 style="color: #4A69A3;">'+title_newfeed+'</h4><hr style="margin-top:10px; margin-bottom:10px"/><p>'+content_newfeed+'</p><hr><span style="float:right; margin-top:-10px; color:#9B9C9C; font-weight:100; font-size:15px">by <a style="color: #4A69A3">'+auth_newfeed+'</a></span></div>',
                     plain: true,
-                    showClose: false,
+                    showClose: true,
                 });
             
                if (list_user){
@@ -357,10 +378,10 @@ var pm = angular.module('PM.controller', ['ngRoute', 'ngStorage', 'angular-md5',
                 ngDialog.openConfirm({
                     template:
                     '<div class="ngdialog-message">' +
-                    '  <h3 class="confirmation-title"><i class="fa fa-exclamation-triangle"></i> Are you sure update user ?</h3><br/>' +
+                    '  <h3 class="confirmation-title">Are you sure update user ?</h3><br/>' +
                     '    <div class="ngdialog-buttons">' +
-                    '      <button type="button" class="ngdialog-button btn-success" ng-click="confirm(confirmValue)">Okay</button>' +
-                    '      <button type="button" class="ngdialog-button btn-primary" ng-click="closeThisDialog()">Cancel</button>' +
+                    '      <button type="button" class="ngdialog-button green darken-4" style="color:#fff" ng-click="confirm(confirmValue)">Okay</button>' +
+                    '      <button type="button" class="ngdialog-button grey darken-4" style="color:#fff" ng-click="closeThisDialog()">Cancel</button>' +
                     '    </div>' +
                     '</div>',
                     plain: true,
@@ -441,10 +462,10 @@ var pm = angular.module('PM.controller', ['ngRoute', 'ngStorage', 'angular-md5',
             ngDialog.openConfirm({
                     template:
                     '<div class="ngdialog-message">' +
-                    '  <h3 class="confirmation-title"><i class="fa fa-exclamation-triangle"></i> Are you sure delete user ?</h3><br/>' +
-                    '    <div class="ngdialog-buttons">' +
-                    '      <button type="button" class="ngdialog-button btn-danger" ng-click="confirm(confirmValue)">Okay</button>' +
-                    '      <button type="button" class="ngdialog-button btn-success" ng-click="closeThisDialog()">Cancel</button>' +
+                    '  <h3 class="confirmation-title">Are you sure delete user ?</h3><br/>' +
+                    '    <div class="ngdialog-buttons" style="padding:0">' +
+                    '      <button type="button" class="ngdialog-button green darken-4" style="color:#fff" ng-click="confirm(confirmValue)">Okay</button>' +
+                    '      <button type="button" class="ngdialog-button grey darken-4" style="color:#fff" ng-click="closeThisDialog()">Cancel</button>' +
                     '    </div>' +
                     '</div>',
                     plain: true,
@@ -571,7 +592,7 @@ var pm = angular.module('PM.controller', ['ngRoute', 'ngStorage', 'angular-md5',
                       ngDialog.open({
                         template: '<div style="padding:5px"><h4 style="color:#D4921D;">'+$scope.Auth_Per[i].Title+'</h4><hr style="margin-top:10px; margin-bottom:10px"/><p>'+$scope.Auth_Per[i].Reasons_For_Leave+'</p><hr/><h6>Ngày Cần Duyệt : <b style="font-weight:600">'+$scope.Auth_Per[i].Leave_day+' - '+$scope.Auth_Per[i].To_Day_Leave+'</b></h6><hr/><h6>Tổng số ngày: '+$scope.Auth_Per[i].Total_Day_leave+'</h6></div>',
                         plain: true,
-                        showClose: false,
+                        showClose: true,
                     });
                  }
              }

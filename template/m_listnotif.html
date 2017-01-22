@@ -5,13 +5,18 @@
         </div>
 
         <div id="style-3" class="modal-body" style="padding-bottom: 0px; height: 450px; overflow-y: auto;">
-<div class="qa-message-list" id="wallmessages" ng-repeat="content in resultNewFeed track by $index">
+<div class="qa-message-list" id="wallmessages" ng-repeat="content in listnewforauth track by $index" style="cursor: pointer">
     <div ng-click="_detail_new_feed($index)" class="message-item" id="m16">
-        <div class="message-inner">
+        <div id="notifi" class="message-inner">
             <div class="message-head clearfix">
-                <div class="avatar pull-left">
+                <!--<div class="avatar pull-left">
                     <i ng-show="content.Isread =='0'" class="fa fa-coffee fa-2x" aria-hidden="true" style="margin-right: -10px; color: #B55902"></i>
 <i ng-show="content.Isread =='1'" class="fa fa-coffee fa-2x" aria-hidden="true" style="margin-right: -10px; color: #979797"></i>
+</div>-->
+<div class="avatar pull-left">
+    <span class="tag black" style="border: 1px solid #fff; color: #fff; height: 35px; padding-top: 7px; font-size: 19px; margin-top: 0px" ng-show="content.Role =='1'">ALL</span>
+    <span class="tag black" style="border: 1px solid #fff; color: #fff; height: 35px; padding-top: 7px; font-size: 19px; margin-top: 0px" ng-show="content.Role =='2'">BA</span>
+    <span class="tag black" style="border: 1px solid #fff; color: #fff; height: 35px; padding-top: 7px; font-size: 19px; margin-top: 0px" ng-show="content.Role =='3'">DEV</span>
 </div>
 <div class="user-detail">
     <h5 ng-show="content.Isread == '0'" class="handle crop" style="color:#D4921D ">{{content.Title}}</h5>

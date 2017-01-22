@@ -3,7 +3,7 @@
         <div class="row" id="home">
 
             <!--Second column-->
-                    <div class="col-lg-4 offset-lg-1">
+                    <!--<div class="col-lg-4 offset-lg-1">
                         <ul class="animated fadeInDown">
                             <li>
                                 <h1 style="font-size: 80px; text-align: left; margin-top: -15px">{{clock | date:'HH:mm'}}</h1>
@@ -14,28 +14,27 @@
                         </ul>
                         
                      
-                    </div>
+                    </div>-->
                     <!--/Second column-->
 
 
             <!--First column-->
-                    <div class="col-lg-6">
+                    <!--<div class="col-lg-6">-->
                         <div class="description">
                             
-                             <ul class="animated fadeInUp">
-                                            <li>
-                                                <h1 class="h1-responsive">
-                                                    <a class="waves-effect waves-light" ng-click="Getweek()" data-toggle="modal" data-target="#myModal" data-backdrop="static"
-                                                        data-keyboard="false" style="color: #fff; font-weight: 400">
-                            <span class="tag black" style="border: 1px solid #fff; color: #fff">{{Auth.Role}}</span>
-                            {{Auth.Fullname}}
-                            </a>
+                             <ul class="">
+                            <li>
+                            <h1 class="h1-responsive animated fadeInUp">
+                                <a class="waves-effect waves-light" ng-click="Getweek()" data-toggle="modal" data-target="#myModal" data-backdrop="static"
+                                    data-keyboard="false" style="color: #fff; font-weight: 400">
+                                  {{Auth.Fullname}}
+                                 </a>
                             </h1>
-                            <hr class="hr-dark" style="height: 0.2px"/>
+                            <hr class="hr-dark animated fadeInLeft" style="box-shadow: 0 2px 5px 0 rgba(0,0,0,.16), 0 2px 10px 0 rgba(0,0,0,.12); width: 40%"/>
                             </li>
 
                             
-                            <li ng-show="ip">
+                            <li ng-show="ip" class="animated fadeInDown">
                                 <a href="" class="btn waves-effect waves-light btn-lg active" ng-click="checkin()" ng-show="!show" style="border: .5px solid #fff; color: #fff; background: #1B5E20">Check in</a>
                                 <a id="checkout" ng-class="myDynamicClass" href="" class="btn waves-effect waves-light red accent-4 btn-lg" ng-click="checkout()"
                                     ng-show="show" style="border: .5px solid #fff; color: #fff; background: #CC0000">Check out</a>
@@ -46,7 +45,7 @@
                             </ul>
 
                         </div>
-                    </div>
+                    <!--</div>-->
                     <!--/.First column-->
 
                      

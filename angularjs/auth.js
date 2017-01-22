@@ -29,7 +29,7 @@ pm
                             }
                             window.localStorage.setItem('auth', JSON.stringify(response.data));
                             window.location.href = '#/home';
-                            window.location.reload(true);
+                            // window.location.reload(true);
                         }
                         else {
                             $scope.alert = "Username or Password incorrect";
@@ -49,29 +49,43 @@ pm
 // <-- function forgot password -->
 
         $scope.forgot = function (data) {
-            cfpLoadingBar.start();
             if (data == undefined) {
                 $scope.alert = "Username can not be blank"
                 Notifi._alert_error($scope.alert);
                 cfpLoadingBar.complete();
             } else {
-                if (data.username) {
-                    apiService.postForgot(data.username).then(function (response) {
-                        if (response.data._error_code == "00") {
-                            $scope.alert_success = "The request send success";
-                            Notifi._alert_success($scope.alert_success);
-                        }
-                        else {
-                            $scope.alert = response.data._error_messenger;
-                            Notifi._alert_error($scope.alert);
-                        }
+                ngDialog.openConfirm({
+                    template:
+                    '<div class="ngdialog-message">' +
+                    '  <h3 class="confirmation-title">Are you sure send request forgot ?</h3><br/>' +
+                    '    <div class="ngdialog-buttons">' +
+                    '      <button type="button" class="ngdialog-button" style="color:#fff; background: #1B5E20" ng-click="confirm(confirmValue)">Okay</button>' +
+                    '      <button type="button" class="ngdialog-button" style="color:#fff; background: #212121" ng-click="closeThisDialog()">Cancel</button>' +
+                    '    </div>' +
+                    '</div>',
+                    plain: true,
+                    showClose: false,
+                }).then(function (confirm) {
+                    cfpLoadingBar.start();
+                    if (data.username) {
+                        apiService.postForgot(data.username).then(function (response) {
+                            if (response.data._error_code == "00") {
+                                $scope.alert_success = "The request send success";
+                                Notifi._alert_success($scope.alert_success);
+                            }
+                            else {
+                                $scope.alert = response.data._error_messenger;
+                                Notifi._alert_error($scope.alert);
+                            }
+                            cfpLoadingBar.complete();
+                        });
+                    } else {
+                        $scope.alert = "Username can not be blank"
+                        Notifi._alert_error($scope.alert);
                         cfpLoadingBar.complete();
-                    });
-                } else {
-                    $scope.alert = "Username can not be blank"
-                    Notifi._alert_error($scope.alert);
-                    cfpLoadingBar.complete();
+                    }
                 }
+                    , function (reject) { });
             }
         }
     });

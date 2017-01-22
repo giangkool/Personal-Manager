@@ -96,7 +96,7 @@
         }
         
         .view {
-            background: url("../img/img.jpg")no-repeat center center fixed;
+            background: url("../img/weekbg/img.jpg")no-repeat center center fixed;
             -webkit-background-size: cover;
             -moz-background-size: cover;
             -o-background-size: cover;
@@ -323,3 +323,10 @@ select#soflow{
    width: 76%;
 }
 
+#notifi:hover{
+    border-color: #007ACC;
+}
+#notifi:hover:after{
+    border-right: 10px solid #007ACC;
+    left: -20px;
+}
