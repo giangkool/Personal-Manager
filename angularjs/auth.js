@@ -1,5 +1,5 @@
 pm
-  .controller('LoginCtrl', function ($rootScope, $scope, $localStorage, $timeout, md5, $http, apiService, ngDialog, cfpLoadingBar, Notifi) {
+  .controller('LoginCtrl', function ($rootScope, $scope, $localStorage, $timeout, md5, $http, apiService, ngDialog, cfpLoadingBar, Notifi, $cookies) {
         window.localStorage.clear(true);
       
         var json = 'https://api.ipify.org?format=json';
@@ -10,6 +10,7 @@ pm
         }, function (e) {
         });
 
+       
 // <-- function login -->
         $scope.login = function (data) {
             cfpLoadingBar.start();
@@ -27,6 +28,7 @@ pm
                             if ($scope.result.Connect == "OK") {
                                 window.localStorage.setItem('ip', true);
                             }
+                            
                             window.localStorage.setItem('auth', JSON.stringify(response.data));
                             window.location.href = '#/home';
                             // window.location.reload(true);

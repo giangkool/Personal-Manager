@@ -1,6 +1,6 @@
-var pm = angular.module('PM.controller', ['ngRoute', 'ngStorage', 'angular-md5', 'PM.Service', 'ngDialog','ngAnimate','angular-notification-icons','ngTagsInput'])
+var pm = angular.module('PM.controller', ['ngRoute', 'ngStorage', 'angular-md5', 'PM.Service', 'ngDialog','ngAnimate','angular-notification-icons','ngTagsInput', 'ngCookies'])
     .filter('unsafe', function($sce) { return $sce.trustAsHtml; })
-    .controller('PMCtrl',  function ($rootScope, $scope, $http, $localStorage, $timeout, $interval, $filter, CheckinService, apiService, Notifi, md5, ngDialog, cfpLoadingBar) {
+    .controller('PMCtrl',  function ($rootScope, $scope, $http, $localStorage, $timeout, $interval, $filter, CheckinService, apiService, Notifi, md5, ngDialog, cfpLoadingBar, $cookies) {
         var auth = window.localStorage.getItem('auth');
         var ip = window.localStorage.getItem('ip');
         $scope.Auth = JSON.parse(auth);
@@ -35,6 +35,18 @@ var pm = angular.module('PM.controller', ['ngRoute', 'ngStorage', 'angular-md5',
 
 
 //<-- auto load when page load -->
+
+        date.setTime(date.getTime() + (1000));
+        $cookies.put("15", auth, {
+            expires: date
+        });
+
+        setTimeout(function () {
+            if (!$cookies.get('15')) {
+                window.location.href = '#/login';
+            }
+        }, 60000);
+
         CheckinService.postCheck($scope.Auth.Email, checkin_day).then(function (response) {
             cfpLoadingBar.start();
             if (response.data.Change_pass == "0") {
