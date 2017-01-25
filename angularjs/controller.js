@@ -45,7 +45,7 @@ var pm = angular.module('PM.controller', ['ngRoute', 'ngStorage', 'angular-md5',
             if (!$cookies.get('15')) {
                 window.location.href = '#/login';
             }
-        }, 60000);
+        }, 900000);
 
         CheckinService.postCheck($scope.Auth.Email, checkin_day).then(function (response) {
             cfpLoadingBar.start();
@@ -80,7 +80,8 @@ var pm = angular.module('PM.controller', ['ngRoute', 'ngStorage', 'angular-md5',
 
          CheckinService.Getall().then(function (response) {
             if (response.data) {
-                $scope.full_all = response.data;
+                $scope.work = response.data[0].list_work;
+                $scope.leave = response.data[0].list_leave;
             }
         });
 
@@ -668,12 +669,16 @@ var pm = angular.module('PM.controller', ['ngRoute', 'ngStorage', 'angular-md5',
              alasql('SELECT * INTO XLS("'+$scope.Auth.Email+'.xls",?) FROM ?',[Userexport, $scope.full_list_time]);
         };
 
-        $scope.Alluserexport = function () {
-            alasql('SELECT * INTO XLS("All User.xls",?) FROM ?',[Alluserexport, $scope.full_all]);
+        $scope.Export_work = function () {
+            alasql('SELECT * INTO XLS("Report Work.xls",?) FROM ?',[report_work, $scope.work]);
         };
 
-        var Alluserexport = {
-            sheetid: 'Report All User',
+        $scope.Export_leave = function () {
+            alasql('SELECT * INTO XLS("Report Leave.xls",?) FROM ?',[report_leave, $scope.leave]);
+        };
+
+        var report_work = {
+            sheetid: 'Report Work All User',
             headers: true,
             column: {
                 style: 'font-size:18px; color:#000'
@@ -685,6 +690,22 @@ var pm = angular.module('PM.controller', ['ngRoute', 'ngStorage', 'angular-md5',
                 { columnid: 'CHECKIN_DAY', title: 'Check In Day', width: '150px' },
                 { columnid: 'CHECKIN_TIME', title: 'Check In Time', width: '150px' },
                 { columnid: 'CHECKOUT_TIME', title: 'Check Out Time', width: '150px' }
+            ]
+        };
+
+        var report_leave = {
+            sheetid: 'Report Leave All User',
+            headers: true,
+            column: {
+                style: 'font-size:18px; color:#000'
+            },
+            columns: [
+                { columnid: 'EMAIL', width: '200px' },
+                { columnid: 'NAME', title: 'Full Name', width: '200px' },
+                { columnid: 'REASON', width: '250px'},
+                { columnid: 'FROM_DAY', title: 'From Day Leave', width: '150px' },
+                { columnid: 'TO_DAY', title: 'To Day Leave', width: '150px' },
+                { columnid: 'TOTAL', title: 'Total Day', width: '150px' }
             ]
         };
 
