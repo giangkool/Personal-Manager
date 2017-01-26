@@ -18,8 +18,3 @@ angular.module('PM', ['ngRoute','PM.controller','ngAnimate','chieffancypants.loa
     
     .otherwise({ redirectTo: '/login' });
 }])
-.config(function(cfpLoadingBarProvider) {
-    cfpLoadingBarProvider.includeSpinner = true;
-  })
-
-

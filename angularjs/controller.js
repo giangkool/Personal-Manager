@@ -186,7 +186,7 @@ var pm = angular.module('PM.controller', ['ngRoute', 'ngStorage', 'angular-md5',
                         var content_feed =  $('#New_feed_content').val();
                         content_feed = content_feed.replace(/\r?\n/g, '<br/>');
                         less_content = content_feed;
-                           
+
                         if(less_content.length > 100) less_content = less_content.substring(0,100);
                         
                         CheckinService.PostNewFeed($scope.Auth.Email, data.title, less_content, content_feed, $scope.selected_user.value, $scope.selected_user.Name).then(function (response) {
@@ -219,6 +219,7 @@ var pm = angular.module('PM.controller', ['ngRoute', 'ngStorage', 'angular-md5',
             var array_user = [];
             var tmp_user;
             var list_user;
+            var decrypted
             for(i =0; i<$scope.listnewforauth.length; i++){
                 if(idx == i){
                     title_newfeed = $scope.listnewforauth[i].Title;
