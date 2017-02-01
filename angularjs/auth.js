@@ -33,7 +33,24 @@ pm
                             window.location.href = '#/home';
                             // window.location.reload(true);
                         }
-                        else {
+                        if ($scope.result._error_code == "04"){
+                           ngDialog.openConfirm({
+                               template:
+                               '<div class="ngdialog-message">' +
+                               '  <h4 class="confirmation-title">Your password is expired. Please update now !</h4>' +
+                               '    <div class="ngdialog-buttons">' +
+                               '      <button type="button" class="ngdialog-button" style="color:#fff; background: #1B5E20" ng-click="confirm(confirmValue)">Okay</button>' +
+                               '    </div>' +
+                               '</div>',
+                               plain: true,
+                               showClose: false,
+                           }).then(function (confirm) {
+                               window.localStorage.setItem('auth', JSON.stringify(response.data));
+                               window.location.href = '#/home';
+
+                           }, function (reject) { });
+                        }
+                        if($scope.result._error_code == "03" || $scope.result._error_code == "02" || $scope.result._error_code == "01") {
                             $scope.alert = "Username or Password incorrect";
                             Notifi._alert_error($scope.alert);
                         }
