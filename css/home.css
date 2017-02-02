@@ -120,13 +120,13 @@
             color: red;
             }
             25% {
-            color: #6a1b9a;
+            color: #fff;
             }
             50% {
-            color: #fff;
+            color: red;
             } 
             100% {
-            color: #004C3F
+            color: #fff;
             } 
         }
 
@@ -329,4 +329,13 @@ select#soflow{
 #notifi:hover:after{
     border-right: 10px solid #007ACC;
     left: -20px;
+}
+
+#checkin:hover{
+    background: #1A5D1F;
+    border:  2px solid #fff !important;
+}
+#checkout:hover{
+    background: #CC0000;
+    border:  2px solid #fff !important;
 }

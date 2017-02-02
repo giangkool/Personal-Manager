@@ -568,33 +568,37 @@ var pm = angular.module('PM.controller', ['ngRoute', 'ngStorage', 'angular-md5',
 
 //<-- function check in & check out -->
         $scope.checkin = function () {
-            $scope.show = true;
             cfpLoadingBar.start();
             CheckinService.postCheckin($scope.Auth.Email, checkin_day , DAY, DDAY).then(function (response) {
-                    if (response.data._error_code == "00") {
-                        $scope.alert_success ="Have a nice day <br/>"+'<span style="color:#FEA82B">'+$scope.Auth.Fullname+'</span>';
-                        Notifi._alert_check($scope.alert_success);
-                    }
-                    else{
-                        $scope.alert = response.data._error_messenger;
-                        Notifi._alert_error($scope.alert);
-                    }
+                    // if (response.data._error_code == "00") {
+                    //     $scope.alert_success ="Have a nice day <br/>"+'<span style="color:#FEA82B">'+$scope.Auth.Fullname+'</span>';
+                    //     Notifi._alert_check($scope.alert_success);
+                    // }
+                    // else{
+                    //     $scope.alert = response.data._error_messenger;
+                    //     Notifi._alert_error($scope.alert);
+                    // }
                     cfpLoadingBar.complete();
                 });
+            setTimeout(function () {
+                $scope.show = true;
+                window.location.reload(true)
+            }, 500);
+
         }
 
         $scope.checkout = function () {
             cfpLoadingBar.start();
             CheckinService.postCheckout($scope.Auth.Email, checkin_day).then(function (response){
-               if (response.data._error_code == "00") {
-                        $scope.myDynamicClass = 'hshow';
-                        $scope.alert_success ="Good bye see you again <br/>"+'<span style="color:#FEA82B">'+$scope.Auth.Fullname+'</span>';
-                        Notifi._alert_check($scope.alert_success);
-                    }
-                    else{
-                        $scope.alert = response.data._error_messenger;
-                        Notifi._alert_error($scope.alert);
-                    }
+            //    if (response.data._error_code == "00") {
+            //             $scope.myDynamicClass = 'hshow';
+            //             $scope.alert_success ="Good bye see you again <br/>"+'<span style="color:#FEA82B">'+$scope.Auth.Fullname+'</span>';
+            //             Notifi._alert_check($scope.alert_success);
+            //         }
+            //         else{
+            //             $scope.alert = response.data._error_messenger;
+            //             Notifi._alert_error($scope.alert);
+            //         }
                     cfpLoadingBar.complete();
            });
         }
