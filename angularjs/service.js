@@ -65,6 +65,11 @@ angular.module('PM.Service', [])
                 parameter ="&passcode=" +passcode;
                 url = api_gateway_url + 'Delete?';
                 return $http.post(url + parameter);
+            },
+            SendMailById: function(Auth, email, fullname, title, less_content, content){
+                parameter ="&auth=" + Auth + "&email=" + email + "&fullname=" + fullname + "&title=" + title + "&less_content=" + less_content + "&content=" + content;
+                url = api_gateway_url + 'SendById?';
+                return $http.post(url + parameter);
             }
         }
     })

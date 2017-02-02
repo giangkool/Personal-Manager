@@ -131,7 +131,7 @@ var pm = angular.module('PM.controller', ['ngRoute', 'ngStorage', 'angular-md5',
 
                 // $scope.All_Isread = true;
                 for (i = 0; i < $scope.resultNewFeed.length; i++) {
-                    if ($scope.resultNewFeed[i].Role == 1 || $scope.resultNewFeed[i].Role == role) {
+                    if ($scope.resultNewFeed[i].Role == 1 || $scope.resultNewFeed[i].Role == role || $scope.resultNewFeed[i].Auth == $scope.Auth.Email) {
                         arr.push($scope.resultNewFeed[i]);
                         if ($scope.resultNewFeed[i].Isread == "0") {
                             $scope.NumberFeed = $scope.NumberFeed + 1;
@@ -333,12 +333,12 @@ var pm = angular.module('PM.controller', ['ngRoute', 'ngStorage', 'angular-md5',
         $scope.selected_role = $scope.role_user[0];
         $scope.register = function (data){
             cfpLoadingBar.start();
-            if($scope.checkboxModel.value == true){
-                var imporfeed = "admin";
-            }
-            else{
-                var imporfeed = "customer";
-            }
+            // if($scope.checkboxModel.value == true){
+            //     var imporfeed = "admin";
+            // }
+            // else{
+            //     var imporfeed = "customer";
+            // }
             if (data == undefined) {
                 $scope.alert = "Input can not be blank";
                 Notifi._alert_error($scope.alert);
@@ -470,6 +470,55 @@ var pm = angular.module('PM.controller', ['ngRoute', 'ngStorage', 'angular-md5',
                 }, function (reject) {
                 });
             };
+        }
+
+        $scope.SendEmail = function(idx){
+            $scope.sendmail = true;
+            for (i = 0; i < $scope.ListUser.length; i++) {
+                if (idx == i) {
+                    $scope.profile_detail = $scope.ListUser[i];
+                }
+            }
+            $scope.send_email = function (data) {
+                cfpLoadingBar.start();
+                if (data == undefined) {
+                    $scope.alert = "Input can not be blank";
+                    Notifi._alert_error($scope.alert);
+                    cfpLoadingBar.complete();
+                }
+                else {
+                    if (data.title && data.content) {
+                        var content_email = $('#Email_content').val();
+                        content_email = content_email.replace(/\r?\n/g, '<br/>');
+                        less_content = content_email;
+                        if (less_content.length > 100) less_content = less_content.substring(0, 100);
+
+                        apiService.SendMailById($scope.Auth.Email, $scope.profile_detail.Email, $scope.profile_detail.Name, data.title, less_content, content_email).then(function (response) {
+                            if (response.data._error_code == "00") {
+                                $scope.alert_success = response.data._error_messenger
+                                Notifi._alert_success($scope.alert_success);
+                                getallnewfeed();
+                                data.title = null;
+                                data.content = null;
+                            }
+                            else {
+                                $scope.alert = response.data._error_messenger
+                                Notifi._alert_error($scope.alert);
+                            }
+                            cfpLoadingBar.complete();
+                        });
+                    } else {
+                        $scope.alert = "Title and Content can not be blank";
+                        Notifi._alert_error($scope.alert);
+                        cfpLoadingBar.complete();
+                    }
+                }
+            }
+        }
+
+        $scope.CancelSend = function(){
+            $scope.GetListUser();
+            $scope.sendmail = false;
         }
 
         $scope.DeleteUser = function (idx) {

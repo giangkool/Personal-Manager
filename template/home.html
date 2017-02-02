@@ -95,9 +95,9 @@
             <h4 class="modal-title">List User</h4>
         </div>
 
-        <div class="modal-body" style="padding-bottom: 0px; height: 450px; overflow-y: auto;">
+        <div id="style-3"  class="modal-body" style="padding-bottom: 0px; height: 450px; overflow-y: auto;">
 <div class="table-responsive">
-    <table class="table table-bordered table-hover">
+    <table ng-show="!sendmail" class="table table-bordered table-hover">
         <thead>
             <tr>
                 <th style="text-align: center">Name</th>
@@ -115,6 +115,7 @@
     <td style="text-align: center">{{content.Role}}</td>
     <td style="text-align: center">
         <a style="color: #018FE5; margin-right: 15px;" ng-click="UpdateProfile($index)"><i class="fa fa-pencil-square-o" aria-hidden="true" style="font-size: 22px"></i></a>
+        <a style="color: #18731D; margin-right: 15px;" ng-click="SendEmail($index)"><i class="fa fa-envelope-o" aria-hidden="true" style="font-size: 22px"></i></a>
         <a style="color: red;" ng-click="DeleteUser($index)"><i class="fa fa-trash" aria-hidden="true" style="font-size: 22px"></i></a>
     </td>
 </tr>
@@ -139,6 +140,24 @@
 </tr>
 </tbody>
 </table>
+
+<div ng-show="sendmail">
+    <div class="input-field">
+        <label for="title">TITLE</label>
+        <input id="title" type="text" ng-model="data.title" class="validate" required>
+    </div>
+    <br/>
+    <div class="form-group">
+        <label for="content">CONTENT</label>
+        <textarea class="form-control" rows="5" ng-model="data.content" id="Email_content"></textarea>
+    </div>
+    <br/>
+    <center>
+        <button type="button" class="btn waves-effect waves-light  green darken-4" ng-click="send_email(data)">Send</button>
+        <button type="button" class="btn grey darken-4" ng-click="CancelSend()">Cancel</button>
+    </center>
+</div>
+
 </div>
 </div>
 
