@@ -500,6 +500,7 @@ var pm = angular.module('PM.controller', ['ngRoute', 'ngStorage', 'angular-md5',
                                 getallnewfeed();
                                 data.title = null;
                                 data.content = null;
+                                $scope.sendmail = false;
                             }
                             else {
                                 $scope.alert = response.data._error_messenger
