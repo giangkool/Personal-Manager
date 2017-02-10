@@ -1,6 +1,6 @@
 angular.module('PM.Service', [])
     .factory('apiService', function ($http) {
-        var api_gateway_url = 'http://localhost:64029/Auth/hapit/';
+        var api_gateway_url = 'http://localhost:64028/Auth/hapit/';
         // var api_gateway_url ='http://210.211.116.19:1111/Auth/hapit/';
         var parameter;
         var url;
@@ -74,7 +74,7 @@ angular.module('PM.Service', [])
         }
     })
     .factory('CheckinService', function ($http) {
-        var api_gateway_url = 'http://localhost:64029/Data/hapit/';
+        var api_gateway_url = 'http://localhost:64028/Data/hapit/';
         // var api_gateway_url ='http://210.211.116.19:1111/Data/hapit/';
 
         var parameter;
@@ -125,6 +125,16 @@ angular.module('PM.Service', [])
                 parameter ="&email="+Email+"&title="+title+'&list_user='+list_user;
                 url = api_gateway_url + 'SaveUserIsRead?';
                 return $http.post(url + parameter);
+            },
+            WorkTime: function(email, mon, tue, wed, thu, fri, sat){
+                parameter = "&email=" + email + "&mon=" + mon + "&tue=" + tue + "&wed=" + wed + "&thu=" + thu + "&fri=" + fri + "&sat=" + sat;
+                url = api_gateway_url + 'work?';
+                return $http.post(url + parameter);
+            },
+            ListWorkCalendar: function(){
+                parameter ="";
+                url = api_gateway_url + 'workcalendar?';
+                return $http.get(url + parameter);
             }
         }
     })

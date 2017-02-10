@@ -315,7 +315,7 @@ select#soflow{
    border: 1px solid #AAA;
    color: #555;
    font-size: inherit;
-   margin-bottom: 20px;
+   margin-bottom: 0px;
    overflow: hidden;
    padding: 5px 10px;
    text-overflow: ellipsis;

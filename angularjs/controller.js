@@ -44,6 +44,7 @@ var pm = angular.module('PM.controller', ['ngRoute', 'ngStorage', 'angular-md5',
         setTimeout(function () {
             if (!$cookies.get('15')) {
                 window.location.href = '#/login';
+                window.location.reload(true);
             }
         }, 900000);
 
@@ -88,7 +89,98 @@ var pm = angular.module('PM.controller', ['ngRoute', 'ngStorage', 'angular-md5',
         getpermossion();
         getrequest();
         getallnewfeed();
+        getlistworktime();
 
+// <-- function work Calendar -->
+    $scope.Mon = [
+            // {Name:'Time'},
+            {Name:'FULL', value: 1},
+            {Name:'AM', value: 2},
+            {Name:'PM', value: 3}
+    ];
+    $scope.Tue = [
+        // { Name: 'Time' },
+        { Name: 'FULL', value: 1 },
+        { Name: 'AM', value: 2 },
+        { Name: 'PM', value: 3 }
+    ];
+    $scope.Wed = [
+        // { Name: 'Time' },
+        { Name: 'FULL', value: 1 },
+        { Name: 'AM', value: 2 },
+        { Name: 'PM', value: 3 }
+    ];
+    $scope.Thu = [
+        // { Name: 'Time' },
+        { Name: 'FULL', value: 1 },
+        { Name: 'AM', value: 2 },
+        { Name: 'PM', value: 3 }
+    ];
+    $scope.Fri = [
+        // { Name: 'Time' },
+        { Name: 'FULL', value: 1 },
+        { Name: 'AM', value: 2 },
+        { Name: 'PM', value: 3 }
+    ];
+    $scope.Sat = [
+        // { Name: 'Time' },
+        { Name: 'FULL', value: 1 },
+        { Name: 'AM', value: 2 },
+        { Name: 'PM', value: 3 }
+    ];
+
+    function getlistworktime(){
+        CheckinService.ListWorkCalendar().then(function(response){
+            $scope.List_work_Time = response.data;
+        });
+    }
+
+    $scope.work_detail = function(){
+        getlistworktime();
+        for(i=0; i<$scope.List_work_Time.length; i++){
+            if($scope.Auth.Email === $scope.List_work_Time[i].Auth){
+                $scope.detail_work_auth = $scope.List_work_Time[i];
+            }
+        }
+    }
+
+    $scope.work_time = true;
+    $scope.update_work_calendar = function(){
+        $scope.work_time = false;
+    }
+
+    $scope.cancel_work_calendar = function(){
+        $scope.work_time = true;
+    }
+
+    $scope.work_calendar = function(data, idx){
+        var auth_detail;
+        for(i=0; i< $scope.ListUser.length; i++){
+            if(idx === i){
+                auth_detail = $scope.ListUser[i];
+            }
+        }
+
+        cfpLoadingBar.start();
+        if (data == undefined || data.mon == undefined || data.tue == undefined || data.wed == undefined || data.thu == undefined || data.fri == undefined || data.sat == undefined) {
+            $scope.alert = "Time can not be blank";
+            Notifi._alert_error($scope.alert);
+            cfpLoadingBar.complete();
+        } else {
+           CheckinService.WorkTime(auth_detail.Email, data.mon.Name, data.tue.Name, data.wed.Name, data.thu.Name, data.fri.Name, data.sat.Name).then(function (response){
+                 if (response.data._error_code == "00") {
+                     $scope.alert_success = response.data._error_messenger
+                     Notifi._alert_success($scope.alert_success);
+                     getlistworktime();
+                 }else{
+                      $scope.alert = response.data._error_messenger
+                      Notifi._alert_error($scope.alert);
+                 }
+                 cfpLoadingBar.complete();
+           });
+        }
+
+    }
 
 // <-- function  Notification -->
 
@@ -583,7 +675,7 @@ var pm = angular.module('PM.controller', ['ngRoute', 'ngStorage', 'angular-md5',
                 });
             setTimeout(function () {
                 $scope.show = true;
-                window.location.reload(true)
+                // window.location.reload(true)
             }, 500);
 
         }

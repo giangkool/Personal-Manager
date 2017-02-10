@@ -43,6 +43,114 @@
 </div>
 </div>
 
+<!--Calendar work-->
+<div class="modal fade bd-example-modal-lg" id="myModal10" role="dialog">
+    <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title">Work Calendar</h4>
+        </div>
+
+        <div id="style-3"  class="modal-body" style="padding-bottom: 0px; height: 450px; overflow-y: auto;">
+<div class="table-responsive">
+
+<table class="table table-bordered table-hover" ng-show="work_time">
+    <thead>
+        <tr ng-show="List_work_Time.length > 0">
+            <th style="text-align: center; width: 200px"></th>
+            <th style="text-align: center">Mon</th>
+            <th style="text-align: center">Tue</th>
+            <th style="text-align: center">Wed</th>
+            <th style="text-align: center">Thu</th>
+            <th style="text-align: center">Fri</th>
+            <th style="text-align: center">Sat</th>
+        </tr>
+    </thead>
+<tbody style="text-align: left">
+<tr ng-repeat="content in List_work_Time" style="text-align: center">
+    <td>{{content.Fullname}}</td>
+    <td>{{content.Monday}}</td>
+    <td>{{content.Tuesday}}</td>
+    <td>{{content.Wednesday}}</td>
+    <td>{{content.Thursday}}</td>
+    <td>{{content.Friday}}</td>
+    <td>{{content.Saturday}}</td>
+</tr>
+</tbody>
+</table>
+
+<table class="table table-bordered table-hover" ng-show="!work_time">
+    <thead>
+        <tr>
+            <th style="text-align: center; width: 200px"></th>
+            <th style="text-align: center">Mon</th>
+            <th style="text-align: center">Tue</th>
+            <th style="text-align: center">Wed</th>
+            <th style="text-align: center">Thu</th>
+            <th style="text-align: center">Fri</th>
+            <th style="text-align: center">Sat</th>
+            <th style="text-align: center; width:50px">Action</th>
+        </tr>
+    </thead>
+<tbody style="text-align: left">
+<tr ng-repeat="content in ListUser track by $index" ng-hide="content.Role=='admin'">
+    <td>{{content.Name}}</td>
+    <td>
+         <select id="soflow" ng-model="data.mon" ng-options="option.Name for option in Mon" style="width: 100%">
+        </select>
+    </td>
+    <td>
+        <select id="soflow" ng-model="data.tue" ng-options="option.Name for option in Tue" style="width: 100%">
+        </select>
+    </td>
+    <td>
+        <select id="soflow" ng-model="data.wed" ng-options="option.Name for option in Wed" style="width: 100%">
+        </select>
+    </td>
+    <td>
+        <select id="soflow" ng-model="data.thu" ng-options="option.Name for option in Thu" style="width: 100%">
+        </select>
+    </td>
+    <td>
+        <select id="soflow" ng-model="data.fri" ng-options="option.Name for option in Fri" style="width: 100%">
+        </select>
+    </td>
+    <td>
+        <select id="soflow" ng-model="data.sat" ng-options="option.Name for option in Sat" style="width: 100%">
+        </select>
+    </td>
+    <td style="text-align: center">
+        <a style="color: #1A5D1F;" ng-click="work_calendar(data, $index)"><i class="fa fa-floppy-o" aria-hidden="true" style="font-size: 25px"></i></a>
+    </td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+
+<hr style="margin-bottom: 0; width: 95%"/>
+<div class="modal-footer" style="padding: 7px; border-top: transparent">
+
+<div ng-show="work_time">
+<button type="button" class="btn waves-effect waves-light  green darken-4" ng-click="update_work_calendar()">Set Time</button>
+<button id="closes" type="button" class="btn grey darken-4" data-dismiss="modal">Close</button>
+</div>
+
+<div ng-show="!work_time">
+    <button type="button" class="btn waves-effect waves-light  warning-color-dark" ng-click="cancel_work_calendar()">Back</button>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+<!-- List work time -->
+<div class="modal fade" id="myModal11" role="dialog"> 
+    <div ng-include=" 'template/m_work_calendar.html' "></div>
+</div>
 
 <!-- List notif -->
 <div class="modal fade" id="myModal7" role="dialog"> 

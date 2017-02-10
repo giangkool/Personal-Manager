@@ -34,9 +34,15 @@
                             </li>
 
                             <li class="animated fadeInDown" ng-show="ip">
-                                <a id="checkin" href="" class="btn btn-outline-success waves-effect waves-light btn-lg" ng-click="checkin()"  ng-show="!show" style="font-weight: 500; color: #fff !important; border-color: #1A5D1F">Check in</a>
-                                <a id="checkout" ng-class="myDynamicClass" href="" class="btn btn-outline-danger waves-effect waves-light btn-lg" ng-click="checkout()"
-                                    ng-show="show" style="font-weight: 500; color: #fff !important; border-color: #CC0000">Check out</a>
+                               
+                                <div ng-show="!show">
+                                     <a id="checkin" href="" class="btn btn-outline-success waves-effect waves-light btn-lg" ng-click="checkin()" style="font-weight: 500; color: #fff !important; border-color: #1A5D1F">Check in</a>
+                                </div>
+                                <div ng-show="show" >
+                                     <a id="checkout" ng-class="myDynamicClass" href="" class="btn btn-outline-danger waves-effect waves-light btn-lg" ng-click="checkout()"
+                                    style="font-weight: 500; color: #fff !important; border-color: #CC0000">Check out</a>
+                                </div>
+
                             </li>
                             <li ng-show="!ip">
                                 <h2 class="h1-responsive ipnotsuport" style="font-weight: 100 !important">Your ip is not supported !</h2>
