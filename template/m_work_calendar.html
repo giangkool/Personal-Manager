@@ -1,30 +1,43 @@
-<div class="modal-dialog">
+<div class="modal-dialog modal-lg">
     <div class="modal-content">
         <div class="modal-header">
             <h4 class="modal-title">Work Calendar</h4>
         </div>
 
-        <div class="modal-body" style="padding-bottom: 0px;">
+        <div class="modal-body" style="padding-bottom: 0px; height: 400px; overflow-y: auto;">
 <div class="table-responsive">
-    <table class="table table-striped">
-        <thead>
-            <tr>
-            <th style="text-align: center">Monday</th>
-            <th style="text-align: center">Tuesday</th>
-            <th style="text-align: center">Wednesday</th>
-            <th style="text-align: center">Thursday</th>
-            <th style="text-align: center">Friday</th>
-            <th style="text-align: center">Saturday</th>
-</tr>
-</thead>
-<tbody style="color:blue; text-align: center">
-<tr>
-    <td>{{detail_work_auth.Monday}}</td>
-    <td>{{detail_work_auth.Tuesday}}</td>
-    <td>{{detail_work_auth.Wednesday}}</td>
-    <td>{{detail_work_auth.Thursday}}</td>
-    <td>{{detail_work_auth.Friday}}</td>
-    <td>{{detail_work_auth.Saturday}}</td>
+    <table class="table table-bordered table-hover" ng-show="work_time">
+    <thead>
+        <tr ng-show="List_work_Time.length > 0">
+            <th style="text-align: center; width: 200px"></th>
+            <th style="text-align: center">Mon</th>
+            <th style="text-align: center">Tue</th>
+            <th style="text-align: center">Wed</th>
+            <th style="text-align: center">Thu</th>
+            <th style="text-align: center">Fri</th>
+            <th style="text-align: center">Sat</th>
+        </tr>
+    </thead>
+<tbody style="text-align: left">
+<tr ng-repeat="content in List_work_Time" style="text-align: center">
+    <td style="font-weight: 600">{{content.Fullname}}</td>
+    <td ng-show="content.Monday =='Off'" style="background: red"></td>
+    <td ng-show="content.Monday != 'Off'" style="background: #1B5E20; color: #fff; font-weight: 600">{{content.Monday}}</td>
+
+    <td ng-show="content.Tuesday =='Off'" style="background: red"></td>
+    <td ng-show="content.Tuesday != 'Off'" style="background: #1B5E20; color: #fff; font-weight: 600">{{content.Tuesday}}</td>
+
+    <td ng-show="content.Wednesday =='Off'" style="background: red"></td>
+    <td ng-show="content.Wednesday != 'Off'" style="background: #1B5E20; color: #fff; font-weight: 600">{{content.Wednesday}}</td>
+
+    <td ng-show="content.Thursday =='Off'" style="background: red"></td>
+    <td ng-show="content.Thursday != 'Off'" style="background: #1B5E20; color: #fff; font-weight: 600">{{content.Thursday}}</td>
+
+    <td ng-show="content.Friday =='Off'" style="background: red"></td>
+    <td ng-show="content.Friday != 'Off'" style="background: #1B5E20; color: #fff; font-weight: 600">{{content.Friday}}</td>
+
+    <td ng-show="content.Saturday =='Off'" style="background: red"></td>
+    <td ng-show="content.Saturday != 'Off'" style="background: #1B5E20; color: #fff; font-weight: 600">{{content.Saturday}}</td>
 </tr>
 </tbody>
 </table>

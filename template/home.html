@@ -68,13 +68,24 @@
     </thead>
 <tbody style="text-align: left">
 <tr ng-repeat="content in List_work_Time" style="text-align: center">
-    <td>{{content.Fullname}}</td>
-    <td>{{content.Monday}}</td>
-    <td>{{content.Tuesday}}</td>
-    <td>{{content.Wednesday}}</td>
-    <td>{{content.Thursday}}</td>
-    <td>{{content.Friday}}</td>
-    <td>{{content.Saturday}}</td>
+    <td style="font-weight: 600">{{content.Fullname}}</td>
+    <td ng-show="content.Monday =='Off'" style="background: red"></td>
+    <td ng-show="content.Monday != 'Off'" style="background: #1B5E20; color: #fff; font-weight: 600">{{content.Monday}}</td>
+
+    <td ng-show="content.Tuesday =='Off'" style="background: red"></td>
+    <td ng-show="content.Tuesday != 'Off'" style="background: #1B5E20; color: #fff; font-weight: 600">{{content.Tuesday}}</td>
+
+    <td ng-show="content.Wednesday =='Off'" style="background: red"></td>
+    <td ng-show="content.Wednesday != 'Off'" style="background: #1B5E20; color: #fff; font-weight: 600">{{content.Wednesday}}</td>
+
+    <td ng-show="content.Thursday =='Off'" style="background: red"></td>
+    <td ng-show="content.Thursday != 'Off'" style="background: #1B5E20; color: #fff; font-weight: 600">{{content.Thursday}}</td>
+
+    <td ng-show="content.Friday =='Off'" style="background: red"></td>
+    <td ng-show="content.Friday != 'Off'" style="background: #1B5E20; color: #fff; font-weight: 600">{{content.Friday}}</td>
+
+    <td ng-show="content.Saturday =='Off'" style="background: red"></td>
+    <td ng-show="content.Saturday != 'Off'" style="background: #1B5E20; color: #fff; font-weight: 600">{{content.Saturday}}</td>
 </tr>
 </tbody>
 </table>
@@ -148,7 +159,7 @@
 </div>
 
 <!-- List work time -->
-<div class="modal fade" id="myModal11" role="dialog"> 
+<div class="modal fade bd-example-modal-lg" id="myModal11" role="dialog"> 
     <div ng-include=" 'template/m_work_calendar.html' "></div>
 </div>
 

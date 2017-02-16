@@ -1,6 +1,7 @@
 angular.module('PM.Service', [])
     .factory('apiService', function ($http) {
-        var api_gateway_url = 'http://localhost:64028/Auth/hapit/';
+        // var api_gateway_url = 'http://localhost:64028/Auth/hapit/';
+        var api_gateway_url = 'http://localhost:81/Auth/hapit/';
         // var api_gateway_url ='http://210.211.116.19:1111/Auth/hapit/';
         var parameter;
         var url;
@@ -74,7 +75,8 @@ angular.module('PM.Service', [])
         }
     })
     .factory('CheckinService', function ($http) {
-        var api_gateway_url = 'http://localhost:64028/Data/hapit/';
+        // var api_gateway_url = 'http://localhost:64028/Data/hapit/';
+        var api_gateway_url = 'http://localhost:81/Data/hapit/';
         // var api_gateway_url ='http://210.211.116.19:1111/Data/hapit/';
 
         var parameter;

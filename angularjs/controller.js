@@ -48,6 +48,20 @@ var pm = angular.module('PM.controller', ['ngRoute', 'ngStorage', 'angular-md5',
             }
         }, 900000);
 
+        // var time = new Date().getTime();
+        // $(document.body).bind("mousemove keypress", function (e) {
+        //     time = new Date().getTime();
+        // });
+        // function refresh() {
+        //     if (new Date().getTime() - time >= 1000){
+        //         // window.location.href = '#/login';
+        //         // window.location.reload(true);
+        //     }
+        //     else
+        //         setTimeout(refresh, 10000);
+        // }
+        // setTimeout(refresh, 10000);
+
         CheckinService.postCheck($scope.Auth.Email, checkin_day).then(function (response) {
             cfpLoadingBar.start();
             if (response.data.Change_pass == "0") {
@@ -94,36 +108,42 @@ var pm = angular.module('PM.controller', ['ngRoute', 'ngStorage', 'angular-md5',
 // <-- function work Calendar -->
     $scope.Mon = [
             // {Name:'Time'},
+            {Name:'OFF', value: 0},
             {Name:'FULL', value: 1},
             {Name:'AM', value: 2},
             {Name:'PM', value: 3}
     ];
     $scope.Tue = [
         // { Name: 'Time' },
+        {Name:'OFF', value: 0},
         { Name: 'FULL', value: 1 },
         { Name: 'AM', value: 2 },
         { Name: 'PM', value: 3 }
     ];
     $scope.Wed = [
         // { Name: 'Time' },
+        {Name:'OFF', value: 0},
         { Name: 'FULL', value: 1 },
         { Name: 'AM', value: 2 },
         { Name: 'PM', value: 3 }
     ];
     $scope.Thu = [
         // { Name: 'Time' },
+        {Name:'OFF', value: 0},
         { Name: 'FULL', value: 1 },
         { Name: 'AM', value: 2 },
         { Name: 'PM', value: 3 }
     ];
     $scope.Fri = [
         // { Name: 'Time' },
+        {Name:'OFF', value: 0},
         { Name: 'FULL', value: 1 },
         { Name: 'AM', value: 2 },
         { Name: 'PM', value: 3 }
     ];
     $scope.Sat = [
         // { Name: 'Time' },
+        {Name:'OFF', value: 0},
         { Name: 'FULL', value: 1 },
         { Name: 'AM', value: 2 },
         { Name: 'PM', value: 3 }
@@ -162,7 +182,7 @@ var pm = angular.module('PM.controller', ['ngRoute', 'ngStorage', 'angular-md5',
         }
 
         cfpLoadingBar.start();
-        if (data == undefined || data.mon == undefined || data.tue == undefined || data.wed == undefined || data.thu == undefined || data.fri == undefined || data.sat == undefined) {
+        if (data == undefined) {
             $scope.alert = "Time can not be blank";
             Notifi._alert_error($scope.alert);
             cfpLoadingBar.complete();
@@ -683,15 +703,15 @@ var pm = angular.module('PM.controller', ['ngRoute', 'ngStorage', 'angular-md5',
         $scope.checkout = function () {
             cfpLoadingBar.start();
             CheckinService.postCheckout($scope.Auth.Email, checkin_day).then(function (response){
-            //    if (response.data._error_code == "00") {
-            //             $scope.myDynamicClass = 'hshow';
-            //             $scope.alert_success ="Good bye see you again <br/>"+'<span style="color:#FEA82B">'+$scope.Auth.Fullname+'</span>';
-            //             Notifi._alert_check($scope.alert_success);
-            //         }
-            //         else{
-            //             $scope.alert = response.data._error_messenger;
-            //             Notifi._alert_error($scope.alert);
-            //         }
+               if (response.data._error_code == "00") {
+                        $scope.myDynamicClass = 'hshow';
+                        // $scope.alert_success ="Good bye see you again <br/>"+'<span style="color:#FEA82B">'+$scope.Auth.Fullname+'</span>';
+                        // Notifi._alert_check($scope.alert_success);
+                    }
+                    else{
+                        $scope.alert = response.data._error_messenger;
+                        Notifi._alert_error($scope.alert);
+                    }
                     cfpLoadingBar.complete();
            });
         }
